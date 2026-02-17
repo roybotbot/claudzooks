@@ -12,8 +12,40 @@ CLAUDE_MD_DIR = DATA_DIR / "claude_md"
 
 SEPARATOR = "─" * 50
 
+# ANSI color codes
+RESET = "\033[0m"
+BOLD = "\033[1m"
+DIM = "\033[2m"
+CYAN = "\033[36m"       # command hints (what to type)
+GREEN = "\033[32m"      # success messages
+YELLOW = "\033[33m"     # warnings, prompts
+RED = "\033[31m"        # errors
+BLUE = "\033[34m"       # code examples, output
+MAGENTA = "\033[35m"    # section headers (## lines)
+WHITE = "\033[37m"      # normal text
+
 # Tracks the current working directory across commands
 cwd = Path.home()
+
+
+def colorize_text(text):
+    """Apply colors to lesson text based on content."""
+    lines = text.split("\n")
+    colored = []
+    in_code_block = False
+
+    for line in lines:
+        if line.startswith("## "):
+            colored.append(f"\n{BOLD}{MAGENTA}{line}{RESET}")
+        elif line.startswith("    ") and line.strip():
+            # Indented code/command examples in lesson text
+            colored.append(f"{CYAN}{line}{RESET}")
+        elif line.startswith("- "):
+            colored.append(f"{DIM}{line}{RESET}")
+        else:
+            colored.append(line)
+
+    return "\n".join(colored)
 
 
 def load_progress():
@@ -87,11 +119,11 @@ def run_command(command, interactive=False):
 
 def prompt_command(expected_command, interactive=False):
     """Show a $ prompt, only accept the expected command."""
-    print(f"\n    {expected_command}")
+    print(f"\n  {BOLD}{CYAN}▶ {expected_command}{RESET}")
     print()
 
     while True:
-        prompt_str = f"{cwd}$ "
+        prompt_str = f"{DIM}{cwd}{RESET}{YELLOW}$ {RESET}"
         try:
             user_input = input(prompt_str).strip()
         except (EOFError, KeyboardInterrupt):
@@ -102,12 +134,12 @@ def prompt_command(expected_command, interactive=False):
             continue
 
         if user_input != expected_command:
-            print(f"  Try typing: {expected_command}")
+            print(f"  {YELLOW}Try typing: {CYAN}{expected_command}{RESET}")
             continue
 
         output = run_command(user_input, interactive=interactive)
         if output:
-            print(output)
+            print(f"{BLUE}{output}{RESET}")
         return
 
 
@@ -115,42 +147,42 @@ def handle_action(action, progress):
     """Handle special game actions."""
     if action == "check_claude":
         if not shutil.which("claude"):
-            print("\n⚠ Claude Code is not installed yet.")
+            print(f"\n{YELLOW}⚠ Claude Code is not installed yet.{RESET}")
             print("That's okay — you won't need it until Lesson 6.")
             print("Install instructions are in the README.")
         else:
-            print("\n✓ Claude Code is installed.")
+            print(f"\n{GREEN}✓ Claude Code is installed.{RESET}")
 
     elif action == "get_project_dir":
-        print(f"\nYour current directory is: {cwd}")
+        print(f"\nYour current directory is: {CYAN}{cwd}{RESET}")
         use_current = input("Use this as your project directory? (y/n): ").strip().lower()
         if use_current == "y":
             progress["project_dir"] = str(cwd)
         else:
             project_dir = input("Paste the full path to your project directory: ").strip()
             progress["project_dir"] = project_dir
-        print(f"✓ Project directory saved: {progress['project_dir']}")
+        print(f"{GREEN}✓ Project directory saved: {progress['project_dir']}{RESET}")
         save_progress(progress)
 
     elif action == "install_claude_md_6":
         project_dir = progress.get("project_dir")
         if not project_dir:
-            print("Error: No project directory set. Complete Lesson 5 first.")
+            print(f"{RED}Error: No project directory set. Complete Lesson 5 first.{RESET}")
             return False
         source = CLAUDE_MD_DIR / "unit_6.md"
         dest = Path(project_dir) / "CLAUDE.md"
         shutil.copy2(source, dest)
-        print(f"✓ CLAUDE.md for Lesson 6 placed in {project_dir}")
+        print(f"{GREEN}✓ CLAUDE.md for Lesson 6 placed in {project_dir}{RESET}")
 
     elif action == "install_claude_md_7":
         project_dir = progress.get("project_dir")
         if not project_dir:
-            print("Error: No project directory set. Complete Lesson 5 first.")
+            print(f"{RED}Error: No project directory set. Complete Lesson 5 first.{RESET}")
             return False
         source = CLAUDE_MD_DIR / "unit_7.md"
         dest = Path(project_dir) / "CLAUDE.md"
         shutil.copy2(source, dest)
-        print(f"✓ CLAUDE.md for Lesson 7 placed in {project_dir}")
+        print(f"{GREEN}✓ CLAUDE.md for Lesson 7 placed in {project_dir}{RESET}")
 
     return True
 
@@ -160,9 +192,9 @@ def run_lesson(lesson_number, progress):
     lesson = load_lesson(lesson_number)
 
     clear_screen()
-    print(SEPARATOR)
+    print(f"{BOLD}{MAGENTA}{SEPARATOR}")
     print(f"  {lesson['title']}")
-    print(SEPARATOR)
+    print(f"{SEPARATOR}{RESET}")
     print()
 
     for i, step in enumerate(lesson["steps"]):
@@ -172,7 +204,7 @@ def run_lesson(lesson_number, progress):
         interactive = step.get("interactive", False)
 
         if text:
-            print(text)
+            print(colorize_text(text))
 
         if action:
             result = handle_action(action, progress)
@@ -183,12 +215,12 @@ def run_lesson(lesson_number, progress):
             prompt_command(command, interactive=interactive)
         elif not action:
             # Text-only step: wait for Enter
-            input("\nPress Enter to continue...")
+            input(f"\n{DIM}Press Enter to continue...{RESET}")
 
         if i < len(lesson["steps"]) - 1:
-            # Visual break between steps (skip if step had no text)
+            # Visual divider between steps
             if text or action:
-                print()
+                print(f"\n{DIM}{SEPARATOR}{RESET}\n")
 
     # Lesson complete
     input("\nPress Enter to finish this lesson...")
@@ -201,10 +233,10 @@ def main():
     global cwd
 
     clear_screen()
-    print("=" * 50)
+    print(f"{BOLD}{CYAN}{'=' * 50}")
     print("  CLAUDZOOKS")
-    print("  Learn the terminal. Build with AI.")
-    print("=" * 50)
+    print(f"  Learn the terminal. Build with AI.")
+    print(f"{'=' * 50}{RESET}")
     print()
 
     progress = load_progress()
@@ -241,10 +273,10 @@ def main():
                 return
 
     print()
-    print("=" * 50)
+    print(f"{BOLD}{GREEN}{'=' * 50}")
     print("  CONGRATULATIONS!")
     print("  You built a web app using the terminal and AI.")
-    print("=" * 50)
+    print(f"{'=' * 50}{RESET}")
 
 
 if __name__ == "__main__":
