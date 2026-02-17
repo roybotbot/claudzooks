@@ -29,9 +29,28 @@ def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-def print_lesson(lesson_number):
+SEPARATOR = "\n" + "─" * 50 + "\n"
+
+
+def load_lesson_sections(lesson_number):
     lesson_file = LESSONS_DIR / f"lesson_{lesson_number}.md"
-    print(lesson_file.read_text())
+    content = lesson_file.read_text()
+    parts = content.split("\n## ")
+    sections = [parts[0]]
+    for part in parts[1:]:
+        sections.append("## " + part)
+    return sections
+
+
+def print_lesson_sections(lesson_number):
+    sections = load_lesson_sections(lesson_number)
+    for i, section in enumerate(sections):
+        if i > 0:
+            print(SEPARATOR)
+        print(section)
+        if i < len(sections) - 1:
+            input("\nPress Enter to continue...")
+            clear_screen()
 
 
 def check_claude_code_installed():
@@ -46,7 +65,7 @@ def install_claude_md(unit_number, project_dir):
 
 def run_lesson(lesson_number, progress):
     clear_screen()
-    print_lesson(lesson_number)
+    print_lesson_sections(lesson_number)
 
     if lesson_number == 0:
         if not check_claude_code_installed():
@@ -102,7 +121,7 @@ def main():
         if choice == "n":
             print(f"Completed lessons: {progress['completed']}")
             pick = int(input("Enter lesson number to review: "))
-            print_lesson(pick)
+            print_lesson_sections(pick)
             input("\nPress Enter to return to your current lesson...")
             current = progress["current_lesson"]
 
