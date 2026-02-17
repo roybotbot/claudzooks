@@ -1,0 +1,62 @@
+{
+  "title": "Lesson 4: Reading and editing",
+  "steps": [
+    {
+      "text": "You can read files with cat, but for longer files you need\nbetter tools. And eventually you need to edit files.\n\nLet's set up a practice file."
+    },
+    {
+      "text": "Go to your practice folder:",
+      "command": "cd ~"
+    },
+    {
+      "text": "Go into the practice area:",
+      "command": "cd claudzooks-practice"
+    },
+    {
+      "text": "Create a file with 10 lines:",
+      "command": "echo \"Line 1\" > longfile.txt"
+    },
+    { "command": "echo \"Line 2\" >> longfile.txt" },
+    { "command": "echo \"Line 3\" >> longfile.txt" },
+    { "command": "echo \"Line 4\" >> longfile.txt" },
+    { "command": "echo \"Line 5\" >> longfile.txt" },
+    { "command": "echo \"Line 6\" >> longfile.txt" },
+    { "command": "echo \"Line 7\" >> longfile.txt" },
+    { "command": "echo \"Line 8\" >> longfile.txt" },
+    { "command": "echo \"Line 9\" >> longfile.txt" },
+    { "command": "echo \"Line 10\" >> longfile.txt" },
+    {
+      "text": "## head — see the first lines\n\nBy default, head shows the first 10 lines.\n\nType this:",
+      "command": "head longfile.txt"
+    },
+    {
+      "text": "You can show fewer lines with a flag:",
+      "command": "head -3 longfile.txt"
+    },
+    {
+      "text": "## tail — see the last lines\n\nSame idea, but from the end of the file.\n\nType this:",
+      "command": "tail longfile.txt"
+    },
+    {
+      "text": "Just the last 3:",
+      "command": "tail -3 longfile.txt"
+    },
+    {
+      "text": "## less — scroll through a file\n\nless opens the file in a scrollable viewer.\n- Arrow keys or j/k to scroll\n- q to quit\n- / to search (type a word and press Enter)\n\nless is how you read files that are too long for the screen.\n\nType this (press q to quit when done):",
+      "command": "less longfile.txt",
+      "interactive": true
+    },
+    {
+      "text": "## nano — a simple text editor\n\nnano is a text editor that runs inside your terminal.\nYou'll see the file contents and a menu bar at the bottom.\nThe ^ symbol means the Control key.\n\nTry this:\n1. Use arrow keys to move the cursor\n2. Type some new text on a blank line\n3. Press Control-O to save (press Enter to confirm)\n4. Press Control-X to exit\n\nType this:",
+      "command": "nano longfile.txt",
+      "interactive": true
+    },
+    {
+      "text": "Check your changes:",
+      "command": "cat longfile.txt"
+    },
+    {
+      "text": "## What you learned\n- head shows the beginning of a file\n- tail shows the end of a file\n- less lets you scroll through a file (q to quit)\n- nano is a simple terminal text editor (Ctrl-O save, Ctrl-X exit)"
+    }
+  ]
+}

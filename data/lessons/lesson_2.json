@@ -1,0 +1,66 @@
+{
+  "title": "Lesson 2: Moving around",
+  "steps": [
+    {
+      "text": "Now that you know where you are and what's around you,\nlet's move between folders."
+    },
+    {
+      "text": "## cd — change directory\n\nThis moves you into a folder. Let's go to your Desktop.\n\nType this:",
+      "command": "cd Desktop"
+    },
+    {
+      "text": "Now check where you are:",
+      "command": "pwd"
+    },
+    {
+      "text": "And see what's on your Desktop from the terminal:",
+      "command": "ls"
+    },
+    {
+      "text": "## cd .. — go up one level\n\nThe two dots mean \"the parent folder\" — one level up.\n\nType this:",
+      "command": "cd .."
+    },
+    {
+      "text": "Confirm you're back where you started:",
+      "command": "pwd"
+    },
+    {
+      "text": "## cd ~ — go home\n\nNo matter where you are, this takes you to your home folder.\nThe tilde (~) is shorthand for your home directory.\n\nType this:",
+      "command": "cd ~"
+    },
+    {
+      "text": "## Absolute vs relative paths\n\nWhen you typed \"cd Desktop\", that was a relative path —\nrelative to wherever you currently were.\n\nYou can also use an absolute path, which starts from the root:\n    cd /Users/yourname/Desktop\n(Replace \"yourname\" with your actual username.)\n\nAbsolute paths start with /. Relative paths don't."
+    },
+    {
+      "text": "## mkdir — make a new folder\n\nLet's create a practice folder. First make sure you're home:",
+      "command": "cd ~"
+    },
+    {
+      "text": "Now create a folder:",
+      "command": "mkdir practice"
+    },
+    {
+      "text": "Check that it exists:",
+      "command": "ls"
+    },
+    {
+      "text": "Go into it:",
+      "command": "cd practice"
+    },
+    {
+      "text": "Check where you are:",
+      "command": "pwd"
+    },
+    {
+      "text": "Go back up:",
+      "command": "cd .."
+    },
+    {
+      "text": "## rmdir — remove an empty folder\n\nThis only works on empty folders. We'll learn how to delete\nfolders with stuff in them later.\n\nClean up the practice folder:",
+      "command": "rmdir practice"
+    },
+    {
+      "text": "## What you learned\n- cd moves you into a folder\n- cd .. goes up one level\n- cd ~ goes to your home folder\n- Absolute paths start with /, relative paths don't\n- mkdir creates a folder\n- rmdir removes an empty folder"
+    }
+  ]
+}

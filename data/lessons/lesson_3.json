@@ -1,0 +1,83 @@
+{
+  "title": "Lesson 3: Files",
+  "steps": [
+    {
+      "text": "Folders are containers. Now let's work with the things inside them.\n\nFirst, create a practice area."
+    },
+    {
+      "text": "Go to your home directory:",
+      "command": "cd ~"
+    },
+    {
+      "text": "Create a practice folder:",
+      "command": "mkdir claudzooks-practice"
+    },
+    {
+      "text": "Go into it:",
+      "command": "cd claudzooks-practice"
+    },
+    {
+      "text": "## touch — create an empty file\n\nThis creates a new, empty file.\n\nType this:",
+      "command": "touch hello.txt"
+    },
+    {
+      "text": "Check that it's there:",
+      "command": "ls"
+    },
+    {
+      "text": "## echo and > — write text into a file\n\nThe > symbol means \"send the output into this file.\"\nIt replaces whatever was in the file before.\n\nType this:",
+      "command": "echo \"Hello, world!\" > hello.txt"
+    },
+    {
+      "text": "## cat — read a file\n\nThis prints the file's contents to the screen.\n\nType this:",
+      "command": "cat hello.txt"
+    },
+    {
+      "text": "## >> — append to a file\n\nTwo arrows (>>) means \"add to the end\" instead of replacing.\n\nType this:",
+      "command": "echo \"This is my second line.\" >> hello.txt"
+    },
+    {
+      "text": "Check the file now — you'll see both lines:",
+      "command": "cat hello.txt"
+    },
+    {
+      "text": "## cp — copy a file\n\nThis makes a duplicate with a new name.\n\nType this:",
+      "command": "cp hello.txt backup.txt"
+    },
+    {
+      "text": "Confirm both files exist:",
+      "command": "ls"
+    },
+    {
+      "text": "## mv — move or rename a file\n\nRename backup.txt:",
+      "command": "mv backup.txt archive.txt"
+    },
+    {
+      "text": "Check — backup.txt is gone, archive.txt is there:",
+      "command": "ls"
+    },
+    {
+      "text": "mv also moves files between folders. Let's try:",
+      "command": "mkdir subfolder"
+    },
+    {
+      "text": "Move archive.txt into the subfolder:",
+      "command": "mv archive.txt subfolder/"
+    },
+    {
+      "text": "Check that it moved:",
+      "command": "ls subfolder/"
+    },
+    {
+      "text": "## rm — delete a file\n\nGone. No trash can, no undo. rm is permanent.\n\nType this:",
+      "command": "rm hello.txt"
+    },
+    {
+      "text": "## rm -r — delete a folder and everything in it\n\nThis removes subfolder and the archive.txt inside it.\nBe careful with rm -r. Double-check what you're deleting.\n\nType this:",
+      "command": "rm -r subfolder"
+    },
+    {
+      "text": "## What you learned\n- touch creates empty files\n- echo \"text\" > file writes to a file (overwrites)\n- echo \"text\" >> file appends to a file\n- cat prints file contents\n- cp copies files\n- mv moves or renames files\n- rm deletes files permanently\n- rm -r deletes folders and their contents"
+    }
+  ]
+}

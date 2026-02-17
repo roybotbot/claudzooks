@@ -1,0 +1,30 @@
+{
+  "title": "Lesson 6: Meet your AI pair programmer",
+  "steps": [
+    {
+      "text": "You've been typing every command by hand. That's good — you needed\nto understand what the terminal does. Now you're going to use\nan AI tool called Claude Code that can write code for you,\nright here in your terminal.\n\n## What Claude Code is\n\nClaude Code is an AI assistant that runs in your terminal.\nYou type instructions in plain English, and it writes code,\ncreates files, and runs commands. Think of it as a very fast\ncoworker who you need to give clear directions to.",
+      "action": "check_claude"
+    },
+    {
+      "text": "First, let's set up Claude Code with rules for this lesson.",
+      "action": "install_claude_md_6"
+    },
+    {
+      "text": "Go to your project folder:",
+      "command": "cd ~/claudzooks-project"
+    },
+    {
+      "text": "Now start Claude Code. You'll be inside Claude's interface.\n\nTry these instructions one at a time:\n\n1. Replace the content of index.html with a simple web page\n   that has a heading that says \"Welcome to Claudzooks\" and\n   a paragraph underneath that says \"I built this with AI.\"\n\n2. Add a second paragraph that says \"This is my first project.\"\n\n3. Change the heading color to blue using a style tag.\n\nEach time, Claude explains what it's doing. Read the explanations.\nThis is how you learn what the code means.\n\nType /exit or press Ctrl-C when you're done.\n\nType this to start:",
+      "command": "claude",
+      "interactive": true
+    },
+    {
+      "text": "Check the result in your browser:",
+      "command": "open index.html",
+      "interactive": true
+    },
+    {
+      "text": "## What you learned\n- Claude Code runs in your terminal with the \"claude\" command\n- You give it instructions in plain English\n- It explains what it's doing, then does it\n- You can check the results by opening the file in a browser"
+    }
+  ]
+}

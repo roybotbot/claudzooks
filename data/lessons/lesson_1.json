@@ -1,0 +1,30 @@
+{
+  "title": "Lesson 1: Where am I?",
+  "steps": [
+    {
+      "text": "Your terminal is a text-based way to interact with your computer.\nInstead of clicking on folders, you type commands.\n\nRight now, your terminal is \"in\" a folder on your computer,\njust like a Finder or File Explorer window would be open to a folder."
+    },
+    {
+      "text": "## pwd — print working directory\n\nThis prints the full path of the folder you're currently in.\nYou'll see something like /Users/yourname or /home/yourname.\n\nType this command:",
+      "command": "pwd"
+    },
+    {
+      "text": "## ls — list what's here\n\nThis shows the files and folders inside your current folder.\nYou should see familiar names — Desktop, Documents, Downloads, etc.\n\nType this command:",
+      "command": "ls"
+    },
+    {
+      "text": "## ls -la — list everything, with details\n\nThe \"-la\" part is called a \"flag.\" It modifies the command.\n- \"-l\" means \"long format\" — show details like file size and date\n- \"-a\" means \"all\" — include hidden files (ones starting with a dot)\n\nType this:",
+      "command": "ls -la"
+    },
+    {
+      "text": "You'll see a lot more items now. Files starting with a dot (like .zshrc\nor .bashrc) are configuration files that are normally hidden."
+    },
+    {
+      "text": "## clear — clean up\n\nThis wipes the screen. Your files haven't changed — it just clears\nthe visual clutter. You'll use this constantly.\n\nType this:",
+      "command": "clear"
+    },
+    {
+      "text": "## What you learned\n- pwd shows where you are\n- ls shows what's in the current folder\n- ls -la shows everything with details\n- clear cleans up the screen"
+    }
+  ]
+}
