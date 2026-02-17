@@ -86,9 +86,8 @@ def run_command(command, interactive=False):
 
 
 def prompt_command(expected_command, interactive=False):
-    """Show a $ prompt, let user type a command, execute it."""
-    hint = expected_command
-    print(f"\n    {hint}")
+    """Show a $ prompt, only accept the expected command."""
+    print(f"\n    {expected_command}")
     print()
 
     while True:
@@ -100,6 +99,10 @@ def prompt_command(expected_command, interactive=False):
             return
 
         if not user_input:
+            continue
+
+        if user_input != expected_command:
+            print(f"  Try typing: {expected_command}")
             continue
 
         output = run_command(user_input, interactive=interactive)
