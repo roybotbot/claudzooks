@@ -22,7 +22,6 @@ YELLOW = "\033[33m"     # warnings, prompts
 RED = "\033[31m"        # errors
 BLUE = "\033[34m"       # code examples, output
 MAGENTA = "\033[35m"    # section headers (## lines)
-WHITE = "\033[37m"      # normal text
 
 # Tracks the current working directory across commands
 cwd = Path.home()
@@ -32,7 +31,6 @@ def colorize_text(text):
     """Apply colors to lesson text based on content."""
     lines = text.split("\n")
     colored = []
-    in_code_block = False
 
     for line in lines:
         if line.startswith("## "):
@@ -164,25 +162,16 @@ def handle_action(action, progress):
         print(f"{GREEN}✓ Project directory saved: {progress['project_dir']}{RESET}")
         save_progress(progress)
 
-    elif action == "install_claude_md_6":
+    elif action in ("install_claude_md_6", "install_claude_md_7"):
         project_dir = progress.get("project_dir")
         if not project_dir:
             print(f"{RED}Error: No project directory set. Complete Lesson 5 first.{RESET}")
             return False
-        source = CLAUDE_MD_DIR / "unit_6.md"
+        unit = action[-1]  # "6" or "7"
+        source = CLAUDE_MD_DIR / f"unit_{unit}.md"
         dest = Path(project_dir) / "CLAUDE.md"
         shutil.copy2(source, dest)
-        print(f"{GREEN}✓ CLAUDE.md for Lesson 6 placed in {project_dir}{RESET}")
-
-    elif action == "install_claude_md_7":
-        project_dir = progress.get("project_dir")
-        if not project_dir:
-            print(f"{RED}Error: No project directory set. Complete Lesson 5 first.{RESET}")
-            return False
-        source = CLAUDE_MD_DIR / "unit_7.md"
-        dest = Path(project_dir) / "CLAUDE.md"
-        shutil.copy2(source, dest)
-        print(f"{GREEN}✓ CLAUDE.md for Lesson 7 placed in {project_dir}{RESET}")
+        print(f"{GREEN}✓ CLAUDE.md for Lesson {unit} placed in {project_dir}{RESET}")
 
     return True
 
@@ -235,7 +224,7 @@ def main():
     clear_screen()
     print(f"{BOLD}{CYAN}{'=' * 50}")
     print("  CLAUDZOOKS")
-    print(f"  Learn the terminal. Build with AI.")
+    print("  Learn the terminal. Build with AI.")
     print(f"{'=' * 50}{RESET}")
     print()
 
