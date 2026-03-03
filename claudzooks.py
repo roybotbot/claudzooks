@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -25,6 +26,7 @@ MAGENTA = "\033[35m"    # section headers (## lines)
 
 # Tracks the current working directory across commands
 cwd = Path.home()
+TEST_MODE = False
 
 
 def highlight_commands_in_text(text):
@@ -128,6 +130,16 @@ def prompt_command(expected_command, interactive=False):
     print(f"\n  {BOLD}{CYAN}▶ Type this and press return:{RESET}  {CYAN}{expected_command}{RESET}")
     print()
 
+    if TEST_MODE:
+        if interactive:
+            print(f"  {DIM}[TEST MODE: skipping interactive command]{RESET}")
+        else:
+            print(f"  {DIM}[TEST MODE: auto-running]{RESET}")
+            output = run_command(expected_command)
+            if output:
+                print(f"{BLUE}{output[:200]}{RESET}")
+        return
+
     while True:
         prompt_str = f"{DIM}{cwd}{RESET}{YELLOW}$ {RESET}"
         try:
@@ -222,11 +234,12 @@ def run_lesson(lesson_number, progress):
         if command:
             prompt_command(command, interactive=interactive)
             # Let user see the result before moving on
-            if i < len(lesson["steps"]) - 1:
+            if i < len(lesson["steps"]) - 1 and not TEST_MODE:
                 input(f"\n{DIM}Press return to continue...{RESET}")
         elif not action:
             # Text-only step: wait for Enter
-            input(f"\n{DIM}Press return to continue...{RESET}")
+            if not TEST_MODE:
+                input(f"\n{DIM}Press return to continue...{RESET}")
 
         if i < len(lesson["steps"]) - 1:
             # Visual divider between steps
@@ -234,24 +247,52 @@ def run_lesson(lesson_number, progress):
                 print(f"\n{DIM}{SEPARATOR}{RESET}\n")
 
     # Lesson complete
-    input("\nPress Enter to finish this lesson...")
+    if not TEST_MODE:
+        input("\nPress Enter to finish this lesson...")
     progress["completed"].append(lesson_number)
     progress["current_lesson"] = lesson_number + 1
     save_progress(progress)
 
 
 def main():
-    global cwd
+    global cwd, TEST_MODE
+
+    args = sys.argv[1:]
+    TEST_MODE = "--test" in args
+    start_lesson = None
+
+    for i, arg in enumerate(args):
+        if arg == "--lesson" and i + 1 < len(args):
+            try:
+                start_lesson = int(args[i + 1])
+            except ValueError:
+                print(f"Invalid lesson number: {args[i + 1]}")
+                return
+
+    if "--help" in args or "-h" in args:
+        print("Usage: python3 claudzooks.py [options]")
+        print()
+        print("Options:")
+        print("  --test           Test mode: auto-run commands, skip interactive")
+        print("  --lesson N       Jump to lesson N (0-7)")
+        print("  --test --lesson N  Skip straight to lesson N in test mode")
+        return
 
     clear_screen()
     print(f"{BOLD}{CYAN}{'=' * 50}")
     print("  CLAUDZOOKS")
     print("  Learn the terminal. Build with AI.")
+    if TEST_MODE:
+        print(f"  {YELLOW}[TEST MODE]{CYAN}")
     print(f"{'=' * 50}{RESET}")
     print()
 
     progress = load_progress()
     cwd = Path.home()
+
+    if start_lesson is not None:
+        progress["current_lesson"] = start_lesson
+        save_progress(progress)
 
     if progress["current_lesson"] > 7:
         print("You've completed all lessons! 🎉")
@@ -261,7 +302,7 @@ def main():
     current = progress["current_lesson"]
     print(f"Current lesson: {current}")
 
-    if current > 0:
+    if current > 0 and start_lesson is None:
         choice = input(f"Continue from Lesson {current}? (y/n): ").strip().lower()
         if choice == "n":
             print(f"Completed lessons: {progress['completed']}")
