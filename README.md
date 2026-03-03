@@ -1,5 +1,7 @@
 # Claudzooks
 
+![Claudzooks](assets/claudzooks.png)
+
 Learn the terminal and build your first web app with AI.
 
 Claudzooks is a guided, interactive terminal trainer that takes you from
