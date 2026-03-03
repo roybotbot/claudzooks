@@ -37,3 +37,11 @@
 - [ ] **Separate instruction file for Claude lessons** — For lessons 6-7, the instructions need to be in a separate text file the learner can reference, because when Claude runs it pushes up previous terminal instructions and they can't scroll back to see them.
 
 - [ ] **Insert CLAUDE.md into project directory** — When doing the Claude project lessons, insert a CLAUDE.md file into the claudzooks-project directory so that Claude knows it's a practice session and should guide the person and help them learn.
+
+- [ ] **Change final project** — Contact form is too basic. Pick a more interesting/satisfying project for the learner to build.
+
+- [ ] **Lesson 8: Claude Code best practices** — Teach best practices for using Claude Code, specifically how to not mess your computer up (permissions, what not to let it do, reviewing changes, etc.).
+
+- [ ] **Lesson 9: Iterating with Claude** — Continue with the lesson 7 project but this time give Claude instructions on how to tweak and make updates. Teach the skill of iterating on a project with AI.
+
+- [ ] **CLAUDE.md exit instructions** — Add to the CLAUDE.md in claudzooks-project that Claude should end every response with instructions on how to exit (`/exit` or Ctrl-C) to get back to the Claudzooks lesson.
