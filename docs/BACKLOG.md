@@ -35,3 +35,5 @@
 - [ ] **Explain nano is keyboard-only** — Mention explicitly that nano uses keyboard commands and arrow keys only, no mouse.
 
 - [ ] **Separate instruction file for Claude lessons** — For lessons 6-7, the instructions need to be in a separate text file the learner can reference, because when Claude runs it pushes up previous terminal instructions and they can't scroll back to see them.
+
+- [ ] **Insert CLAUDE.md into project directory** — When doing the Claude project lessons, insert a CLAUDE.md file into the claudzooks-project directory so that Claude knows it's a practice session and should guide the person and help them learn.
