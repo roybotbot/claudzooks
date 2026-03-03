@@ -34,4 +34,4 @@
 
 - [ ] **Explain nano is keyboard-only** — Mention explicitly that nano uses keyboard commands and arrow keys only, no mouse.
 
-- [ ] **Scroll hint for project lessons** — At the start of project lessons (5-7), mention that if they can't see instructions they can scroll up or down in the terminal.
+- [ ] **Separate instruction file for Claude lessons** — For lessons 6-7, the instructions need to be in a separate text file the learner can reference, because when Claude runs it pushes up previous terminal instructions and they can't scroll back to see them.
