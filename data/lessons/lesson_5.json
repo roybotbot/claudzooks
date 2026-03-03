@@ -2,10 +2,10 @@
   "title": "Lesson 5: Putting it together",
   "steps": [
     {
-      "text": "Time to combine what you've learned. You're going to create\nthe project folder where you'll build your web app in Lessons 6-7.\n\nCreate this folder structure by hand:\n\n    ~/claudzooks-project/\n    ├── index.html\n    ├── style.css\n    └── notes.txt"
+      "text": "Time to combine everything you've learned. You're going to\ncreate the project folder where you'll build a real web app\nin the next lessons.\n\nNote: if your terminal instructions scroll off the screen\nat any point, you can scroll up to see them again.\n\nHere's what you'll build:\n\n    ~/claudzooks-project/\n    ├── index.html\n    ├── style.css\n    └── notes.txt"
     },
     {
-      "text": "Go to your home directory:",
+      "text": "Go to your home folder:",
       "command": "cd ~"
     },
     {
@@ -17,7 +17,7 @@
       "command": "cd claudzooks-project"
     },
     {
-      "text": "Create the three files:",
+      "text": "Create the three files. `touch` creates an empty file —\nyou learned this in Lesson 3.",
       "command": "touch index.html"
     },
     {
@@ -27,7 +27,10 @@
       "command": "touch notes.txt"
     },
     {
-      "text": "Add starter content to index.html:",
+      "text": "Open Finder and navigate to your home folder. You should\nsee \"claudzooks-project\" right there, and inside it, the\nthree files you just created. You did that with the terminal!\n\nNow let's add some content. This is the starter code for\na web page:"
+    },
+    {
+      "text": "Write the HTML into index.html:",
       "command": "echo \"<!DOCTYPE html>\" > index.html"
     },
     {
@@ -51,12 +54,12 @@
       "command": "cat notes.txt"
     },
     {
-      "text": "Open index.html in your browser to see it.\nYou should see a web page that says \"Hello!\" — you made that\nwith just terminal commands.",
+      "text": "Now for the exciting part — let's open your web page in\na browser! You should see a page that says \"Hello!\"\n\nYou made a web page using nothing but terminal commands.",
       "command": "open index.html",
       "interactive": true
     },
     {
-      "text": "Now let's save where your project lives so the next lessons\ncan find it.",
+      "text": "Now let's save where your project lives so the next\nlessons can find it.",
       "action": "get_project_dir"
     }
   ]

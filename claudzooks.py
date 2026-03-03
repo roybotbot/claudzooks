@@ -27,6 +27,12 @@ MAGENTA = "\033[35m"    # section headers (## lines)
 cwd = Path.home()
 
 
+def highlight_commands_in_text(text):
+    """Highlight backtick-wrapped command names in text."""
+    import re
+    return re.sub(r'`([^`]+)`', f'{BOLD}{CYAN}\\1{RESET}', text)
+
+
 def colorize_text(text):
     """Apply colors to lesson text based on content."""
     lines = text.split("\n")
@@ -39,9 +45,11 @@ def colorize_text(text):
             # Indented code/command examples in lesson text
             colored.append(f"{CYAN}{line}{RESET}")
         elif line.startswith("- "):
-            colored.append(f"{DIM}{line}{RESET}")
+            colored.append(f"{DIM}{highlight_commands_in_text(line)}{RESET}")
+        elif line.startswith("⚠"):
+            colored.append(f"{BOLD}{RED}{line}{RESET}")
         else:
-            colored.append(line)
+            colored.append(highlight_commands_in_text(line))
 
     return "\n".join(colored)
 
@@ -117,7 +125,7 @@ def run_command(command, interactive=False):
 
 def prompt_command(expected_command, interactive=False):
     """Show a $ prompt, only accept the expected command."""
-    print(f"\n  {BOLD}{CYAN}▶ {expected_command}{RESET}")
+    print(f"\n  {BOLD}{CYAN}▶ Type this and press return:{RESET}  {CYAN}{expected_command}{RESET}")
     print()
 
     while True:
@@ -137,7 +145,9 @@ def prompt_command(expected_command, interactive=False):
 
         output = run_command(user_input, interactive=interactive)
         if output:
+            print(f"\n{DIM}{'·' * 40}{RESET}")
             print(f"{BLUE}{output}{RESET}")
+            print(f"{DIM}{'·' * 40}{RESET}")
         return
 
 
@@ -195,6 +205,15 @@ def run_lesson(lesson_number, progress):
         if text:
             print(colorize_text(text))
 
+        # Auto-run commands (game does these for the learner)
+        auto_commands = step.get("auto_commands")
+        if auto_commands:
+            for auto_cmd in auto_commands:
+                print(f"  {DIM}$ {auto_cmd}{RESET}")
+                output = run_command(auto_cmd)
+                if output:
+                    print(f"  {DIM}{output}{RESET}")
+
         if action:
             result = handle_action(action, progress)
             if result is False:
@@ -202,9 +221,12 @@ def run_lesson(lesson_number, progress):
 
         if command:
             prompt_command(command, interactive=interactive)
+            # Let user see the result before moving on
+            if i < len(lesson["steps"]) - 1:
+                input(f"\n{DIM}Press return to continue...{RESET}")
         elif not action:
             # Text-only step: wait for Enter
-            input(f"\n{DIM}Press Enter to continue...{RESET}")
+            input(f"\n{DIM}Press return to continue...{RESET}")
 
         if i < len(lesson["steps"]) - 1:
             # Visual divider between steps

@@ -2,11 +2,11 @@
   "title": "Lesson 6: Meet your AI pair programmer",
   "steps": [
     {
-      "text": "You've been typing every command by hand. That's good — you needed\nto understand what the terminal does. Now you're going to use\nan AI tool called Claude Code that can write code for you,\nright here in your terminal.\n\n## What Claude Code is\n\nClaude Code is an AI assistant that runs in your terminal.\nYou type instructions in plain English, and it writes code,\ncreates files, and runs commands. Think of it as a very fast\ncoworker who you need to give clear directions to.",
+      "text": "You've been typing every command by hand. That's good — you\nneeded to understand what the terminal does. Now you're going\nto use an AI tool called Claude Code that can write code for\nyou, right here in your terminal.\n\n## What Claude Code is\n\nClaude Code is an AI assistant that lives in your terminal.\nYou type instructions in plain English, and it writes code,\ncreates files, and runs commands. Think of it as a very fast\ncoworker who needs clear directions.",
       "action": "check_claude"
     },
     {
-      "text": "First, let's set up Claude Code with rules for this lesson.",
+      "text": "First, let's set up Claude Code with some rules for this\nlesson so it knows to guide you as a beginner.",
       "action": "install_claude_md_6"
     },
     {
@@ -14,17 +14,17 @@
       "command": "cd ~/claudzooks-project"
     },
     {
-      "text": "Now start Claude Code. You'll be inside Claude's interface.\n\nTry these instructions one at a time:\n\n1. Replace the content of index.html with a simple web page\n   that has a heading that says \"Welcome to Claudzooks\" and\n   a paragraph underneath that says \"I built this with AI.\"\n\n2. Add a second paragraph that says \"This is my first project.\"\n\n3. Change the heading color to blue using a style tag.\n\nEach time, Claude explains what it's doing. Read the explanations.\nThis is how you learn what the code means.\n\nType /exit or press Ctrl-C when you're done.\n\nType this to start:",
+      "text": "Important: when Claude Code is running, it takes over\nyour terminal. You won't be able to see these instructions\nwhile Claude is active.\n\nHere's what to do inside Claude Code:\n\n1. Replace the content of index.html with a simple web page\n   that has a heading saying \"Welcome to Claudzooks\" and\n   a paragraph saying \"I built this with AI.\"\n\n2. Add a second paragraph: \"This is my first project.\"\n\n3. Change the heading color to blue using a style tag.\n\nRead what Claude explains — that's how you learn what the\ncode means.\n\nTo come back here, type /exit or press Ctrl-C.\n\nReady? Let's start Claude Code:",
       "command": "claude",
       "interactive": true
     },
     {
-      "text": "Check the result in your browser:",
+      "text": "Welcome back! Let's see what Claude built.\nOpen your page in the browser:",
       "command": "open index.html",
       "interactive": true
     },
     {
-      "text": "## What you learned\n- Claude Code runs in your terminal with the \"claude\" command\n- You give it instructions in plain English\n- It explains what it's doing, then does it\n- You can check the results by opening the file in a browser"
+      "text": "## What you learned\n- Claude Code runs in your terminal with the `claude` command\n- You give it instructions in plain English\n- It explains what it's doing before making changes\n- Type `/exit` or press Ctrl-C to leave Claude Code\n- You can check results by opening files in your browser"
     }
   ]
 }
