@@ -14,12 +14,12 @@ export function LessonPanel({ lesson, stepIndex, lessonIndex, totalLessons, onCo
 
   return (
     <div style={{
-      padding: '2rem',
       fontFamily: 'monospace',
       height: '100%',
-      overflowY: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
       boxSizing: 'border-box',
-    }}>
+    }}><div style={{ flex: 1, overflowY: 'auto', padding: '2rem', paddingBottom: isTextOnly && onContinue ? '0.5rem' : '2rem' }}>
       <div style={{ color: '#666', fontSize: 12, marginBottom: '1.5rem', letterSpacing: 1 }}>
         LESSON {lessonIndex} OF {totalLessons - 1}
       </div>
@@ -63,24 +63,28 @@ export function LessonPanel({ lesson, stepIndex, lessonIndex, totalLessons, onCo
         </div>
       )}
 
+      </div>
+
       {isTextOnly && onContinue && (
-        <button
-          onClick={onContinue}
-          style={{
-            marginTop: '2rem',
-            padding: '0.75rem 1.5rem',
-            background: '#7dd3fc',
-            color: '#000',
-            border: 'none',
-            borderRadius: 6,
-            cursor: 'pointer',
-            fontFamily: 'monospace',
-            fontSize: 14,
-            fontWeight: 'bold',
-          }}
-        >
-          Continue →
-        </button>
+        <div style={{ padding: '1rem 2rem', borderTop: '1px solid #1f2937' }}>
+          <button
+            onClick={onContinue}
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              background: '#7dd3fc',
+              color: '#000',
+              border: 'none',
+              borderRadius: 6,
+              cursor: 'pointer',
+              fontFamily: 'monospace',
+              fontSize: 14,
+              fontWeight: 'bold',
+            }}
+          >
+            Continue →
+          </button>
+        </div>
       )}
     </div>
   )
