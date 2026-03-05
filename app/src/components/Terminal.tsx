@@ -18,10 +18,10 @@ export function Terminal({ step, cwd, onComplete }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // Auto-focus the hidden input
+  // Keep focus on hidden input whenever state changes
   useEffect(() => {
     inputRef.current?.focus()
-  }, [])
+  }, [waitingToContinue, done])
 
   // Scroll to bottom on new output
   useEffect(() => {
