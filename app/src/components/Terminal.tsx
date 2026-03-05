@@ -89,7 +89,7 @@ export function Terminal({ step, cwd, onComplete }: Props) {
       {/* Connection status */}
       {!connected && (
         <div style={{ color: '#f87171', marginBottom: 8, fontSize: 13 }}>
-          ⚠ Not connected to command server. Run: <code>python3 server/ws_server.py</code>
+          ⚠ Connecting to command server...
         </div>
       )}
 
