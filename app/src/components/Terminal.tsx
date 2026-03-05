@@ -13,6 +13,7 @@ export function Terminal({ step, cwd, onComplete }: Props) {
   const [outputLines, setOutputLines] = useState<string[]>([])
   const [currentCwd, setCurrentCwd] = useState(cwd)
   const [done, setDone] = useState(false)
+  const [waitingToContinue, setWaitingToContinue] = useState(false)
   const [shake, setShake] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -27,12 +28,14 @@ export function Terminal({ step, cwd, onComplete }: Props) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [outputLines, input])
 
+  const pendingCwd = useRef<string>(cwd)
+
   const handleResponse = useCallback((out: string, newCwd: string) => {
     setOutputLines(prev => [...prev, ...(out ? [out] : [])])
     setCurrentCwd(newCwd)
-    setDone(true)
-    onComplete(newCwd)
-  }, [onComplete])
+    pendingCwd.current = newCwd
+    setWaitingToContinue(true)
+  }, [])
 
   const { sendCommand } = useCommandServer(handleResponse)
 
@@ -40,6 +43,14 @@ export function Terminal({ step, cwd, onComplete }: Props) {
     if (done) return
 
     if (e.key === 'Enter') {
+      // Waiting for user to acknowledge output before advancing
+      if (waitingToContinue) {
+        setWaitingToContinue(false)
+        setDone(true)
+        onComplete(pendingCwd.current)
+        return
+      }
+
       const trimmed = input.trim()
       if (!trimmed) return
 
@@ -81,8 +92,15 @@ export function Terminal({ step, cwd, onComplete }: Props) {
         </div>
       ))}
 
+      {/* Press enter to continue */}
+      {waitingToContinue && (
+        <div style={{ color: '#6b7280', marginTop: 8, fontStyle: 'italic' }}>
+          press enter to continue...
+        </div>
+      )}
+
       {/* Prompt row */}
-      {!done && (
+      {!done && !waitingToContinue && (
         <div style={{ display: 'flex', alignItems: 'center', lineHeight: 1.6 }}>
           <span style={{ color: '#6b7280', marginRight: 6 }}>{currentCwd}$</span>
           <div style={{ position: 'relative', flex: 1 }}>
