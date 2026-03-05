@@ -1,35 +1,89 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect, useCallback } from 'react'
+import { loadLesson } from './lessons'
+import type { Lesson } from './lessons'
+import { LessonPanel } from './components/LessonPanel'
+import { Terminal } from './components/Terminal'
+import { useProgress } from './hooks/useProgress'
 
-function App() {
-  const [count, setCount] = useState(0)
+const TOTAL_LESSONS = 8
+
+export default function App() {
+  const { progress, setProgress } = useProgress()
+  const { lessonIndex, stepIndex, cwd } = progress
+  const [lesson, setLesson] = useState<Lesson | null>(null)
+
+  useEffect(() => {
+    setLesson(null)
+    loadLesson(lessonIndex).then(setLesson)
+  }, [lessonIndex])
+
+  const advance = useCallback((newCwd: string) => {
+    setProgress(prev => {
+      if (!lesson) return prev
+      const nextStep = prev.stepIndex + 1
+      if (nextStep < lesson.steps.length) {
+        return { ...prev, stepIndex: nextStep, cwd: newCwd }
+      } else if (prev.lessonIndex + 1 < TOTAL_LESSONS) {
+        return { lessonIndex: prev.lessonIndex + 1, stepIndex: 0, cwd: newCwd }
+      }
+      return prev
+    })
+  }, [lesson, setProgress])
+
+  const advanceStep = useCallback(() => advance(cwd), [advance, cwd])
+
+  if (!lesson) {
+    return (
+      <div style={{ color: '#7dd3fc', padding: '2rem', fontFamily: 'monospace' }}>
+        Loading...
+      </div>
+    )
+  }
+
+  const currentStep = lesson.steps[stepIndex]
+
+  if (lessonIndex >= TOTAL_LESSONS) {
+    return (
+      <div style={{ color: '#7dd3fc', padding: '2rem', fontFamily: 'monospace' }}>
+        <h1>🎉 You did it!</h1>
+        <p>You've completed all Claudzooks lessons. You built a web app using the terminal and AI.</p>
+      </div>
+    )
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div style={{
+      display: 'flex',
+      height: '100vh',
+      background: '#0d0d0d',
+      color: 'white',
+      overflow: 'hidden',
+    }}>
+      {/* Sidebar */}
+      <div style={{
+        width: 360,
+        borderRight: '1px solid #1f2937',
+        flexShrink: 0,
+        overflow: 'hidden',
+      }}>
+        <LessonPanel
+          lesson={lesson}
+          stepIndex={stepIndex}
+          lessonIndex={lessonIndex}
+          totalLessons={TOTAL_LESSONS}
+          onContinue={advanceStep}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+
+      {/* Terminal pane */}
+      <div style={{ flex: 1, overflow: 'hidden' }}>
+        <Terminal
+          key={`${lessonIndex}-${stepIndex}`}
+          step={currentStep}
+          cwd={cwd}
+          onComplete={advance}
+        />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
-
-export default App
