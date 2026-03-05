@@ -2,3 +2,4 @@ __pycache__/
 progress.json
 *.pyc
 docs/
+.worktrees/
