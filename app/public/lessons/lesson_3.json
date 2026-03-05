@@ -1,0 +1,96 @@
+{
+  "title": "Lesson 3: Working with files",
+  "steps": [
+    {
+      "text": "Folders are containers. Now let's work with the things\ninside them — files.\n\nFirst, let's create a practice area to work in."
+    },
+    {
+      "text": "Go to your home folder:",
+      "command": "cd ~"
+    },
+    {
+      "text": "Create a practice folder and go into it:",
+      "command": "mkdir claudzooks-practice"
+    },
+    {
+      "command": "cd claudzooks-practice"
+    },
+    {
+      "text": "## touch — create an empty file\n\n`touch` is a command that creates a new, empty file.\n\nLet's create a file called hello.txt:",
+      "command": "touch hello.txt"
+    },
+    {
+      "text": "Check that it's there with `ls`:",
+      "command": "ls"
+    },
+    {
+      "text": "You just created a file from the terminal! If you open\nFinder and navigate to your home folder, then into\nclaudzooks-practice, you'll see hello.txt sitting there.\nIt's a real file — you made it by typing a command."
+    },
+    {
+      "text": "## echo and > — write text into a file\n\nThe `echo` command prints text. The > symbol means \"send\nthe output into this file\" instead of showing it on screen.\nIf the file already has content, > replaces it completely.",
+      "command": "echo \"Hello, world!\" > hello.txt"
+    },
+    {
+      "text": "## cat — read a file\n\n`cat` is a command that prints a file's contents to the\nscreen. Let's see what's in hello.txt now:",
+      "command": "cat hello.txt"
+    },
+    {
+      "text": "## >> — append to a file\n\nTwo arrows (>>) means \"add to the end of the file\" instead\nof replacing everything. This keeps what's already there\nand adds your new text after it.",
+      "command": "echo \"This is my second line.\" >> hello.txt"
+    },
+    {
+      "text": "Check the file — you'll see both lines:",
+      "command": "cat hello.txt"
+    },
+    {
+      "text": "## cp — copy a file\n\n`cp` is a command that copies a file. You give it two names:\nthe file to copy, and what to call the copy.",
+      "command": "cp hello.txt backup.txt"
+    },
+    {
+      "text": "Confirm both files exist:",
+      "command": "ls"
+    },
+    {
+      "text": "## mv — move or rename a file\n\n`mv` is a command that moves or renames a file. If you give\nit a new name in the same folder, it renames. If you give\nit a path to a different folder, it moves.\n\nLet's rename backup.txt:",
+      "command": "mv backup.txt archive.txt"
+    },
+    {
+      "text": "Check — backup.txt is gone, archive.txt took its place:",
+      "command": "ls"
+    },
+    {
+      "text": "`mv` also moves files between folders. Let's try that.\nFirst, create a subfolder:",
+      "command": "mkdir subfolder"
+    },
+    {
+      "text": "Now move archive.txt into the subfolder. The / at the end\nof \"subfolder/\" tells the terminal it's a folder, not a file\nname. It's not strictly required, but it makes your intent\nclear.",
+      "command": "mv archive.txt subfolder/"
+    },
+    {
+      "text": "Check that it moved:",
+      "command": "ls subfolder/"
+    },
+    {
+      "text": "## rm — delete a file\n\n⚠ WARNING: `rm` deletes files permanently. There is no trash\n⚠ can, no undo, no \"are you sure?\" prompt. Once it's gone,\n⚠ it's gone. Always double-check what you're deleting.\n\nLet's delete hello.txt:",
+      "command": "rm hello.txt"
+    },
+    {
+      "text": "Let's also clean up the subfolder. To delete a folder that\nhas files inside it, you need to delete the files first,\nthen remove the empty folder.\n\nDelete the file inside:",
+      "command": "rm subfolder/archive.txt"
+    },
+    {
+      "text": "Now remove the empty folder:",
+      "command": "rmdir subfolder"
+    },
+    {
+      "text": "Check that everything is cleaned up:",
+      "command": "ls"
+    },
+    {
+      "text": "The folder should be empty now (or show nothing)."
+    },
+    {
+      "text": "## What you learned\n- `touch` creates empty files\n- `echo \"text\" > file` writes text to a file (replaces contents)\n- `echo \"text\" >> file` adds text to the end of a file\n- `cat` prints a file's contents\n- `cp` copies files\n- `mv` moves or renames files\n- The / at the end of a name means it's a folder\n- `rm` deletes files permanently — be careful!\n\nRemember: you can always open Finder to see the files you\ncreate. The terminal and Finder show the same files."
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "title": "Lesson 4: Reading and editing",
+  "steps": [
+    {
+      "text": "You can read short files with `cat`, but for longer files\nyou need better tools. And eventually you'll need to edit\nfiles too.\n\nLet's set up a practice file to work with."
+    },
+    {
+      "text": "Go to your practice folder:",
+      "command": "cd ~"
+    },
+    {
+      "command": "cd claudzooks-practice"
+    },
+    {
+      "text": "Let's create a file with several lines. You already know\nhow `echo` and >> work, so type the first three lines:",
+      "command": "echo \"Line 1\" > longfile.txt"
+    },
+    {
+      "command": "echo \"Line 2\" >> longfile.txt"
+    },
+    {
+      "command": "echo \"Line 3\" >> longfile.txt"
+    },
+    {
+      "text": "You get the idea — we need a few more lines. Let me add\nthe rest for you.",
+      "auto_commands": [
+        "echo \"Line 4\" >> longfile.txt",
+        "echo \"Line 5\" >> longfile.txt",
+        "echo \"Line 6\" >> longfile.txt",
+        "echo \"Line 7\" >> longfile.txt",
+        "echo \"Line 8\" >> longfile.txt",
+        "echo \"Line 9\" >> longfile.txt",
+        "echo \"Line 10\" >> longfile.txt"
+      ]
+    },
+    {
+      "text": "Now we have a 10-line file to practice with."
+    },
+    {
+      "text": "## head — see the first lines\n\n`head` is a command that shows the beginning of a file.\nBy default it shows the first 10 lines.",
+      "command": "head longfile.txt"
+    },
+    {
+      "text": "You can tell `head` exactly how many lines to show using\na flag. The -3 flag means \"show only the first 3 lines.\"\nYou can use any number: -5 for five lines, -1 for one line,\nand so on.",
+      "command": "head -3 longfile.txt"
+    },
+    {
+      "text": "## tail — see the last lines\n\n`tail` is the opposite of `head` — it shows the end of a\nfile. Same idea, same flags.",
+      "command": "tail longfile.txt"
+    },
+    {
+      "text": "Just the last 3 lines:",
+      "command": "tail -3 longfile.txt"
+    },
+    {
+      "text": "## less — scroll through a file\n\n`less` is a command that opens a file in a scrollable viewer.\nThis is how you read files that are too long for the screen.\n\nRemember: the terminal is keyboard-only. Inside `less`:\n- Arrow keys or j/k to scroll up and down\n- q to quit and go back to the terminal\n- / to search (type a word and press return)\n\nTry it now. Press q when you're done looking around:",
+      "command": "less longfile.txt",
+      "interactive": true
+    },
+    {
+      "text": "## nano — a simple text editor\n\n`nano` is a text editor that runs inside your terminal.\nLike everything in the terminal, `nano` is keyboard-only —\nthere's no mouse. You move around with arrow keys and use\nkeyboard shortcuts for everything.\n\nWhen `nano` opens, you'll see:\n- The file contents in the middle\n- A menu bar at the bottom showing shortcuts\n- The ^ symbol means the Control key\n\nTry this:\n1. Use arrow keys to move the cursor around\n2. Type some new text anywhere\n3. Press Control-O to save (then press return to confirm)\n4. Press Control-X to exit back to the terminal",
+      "command": "nano longfile.txt",
+      "interactive": true
+    },
+    {
+      "text": "Let's see if your changes saved:",
+      "command": "cat longfile.txt"
+    },
+    {
+      "text": "## What you learned\n- `head` shows the beginning of a file (-3 for first 3 lines, etc.)\n- `tail` shows the end of a file (same flags as `head`)\n- `less` lets you scroll through a file (q to quit)\n- `nano` is a keyboard-only text editor (Ctrl-O save, Ctrl-X exit)\n- Everything in the terminal is controlled by the keyboard"
+    }
+  ]
+}
