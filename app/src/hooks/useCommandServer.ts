@@ -1,25 +1,40 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 
 type ResponseHandler = (output: string, cwd: string) => void
 
 export function useCommandServer(onResponse: ResponseHandler) {
   const ws = useRef<WebSocket | null>(null)
   const handler = useRef(onResponse)
+  const [connected, setConnected] = useState(false)
   handler.current = onResponse
 
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:8765')
-    socket.onmessage = (e) => {
-      const { output, cwd } = JSON.parse(e.data)
-      handler.current(output, cwd)
+    function connect() {
+      const socket = new WebSocket('ws://localhost:8765')
+      socket.onopen = () => setConnected(true)
+      socket.onclose = () => {
+        setConnected(false)
+        // Retry after 2 seconds
+        setTimeout(connect, 2000)
+      }
+      socket.onerror = () => setConnected(false)
+      socket.onmessage = (e) => {
+        const { output, cwd } = JSON.parse(e.data)
+        handler.current(output, cwd)
+      }
+      ws.current = socket
     }
-    ws.current = socket
-    return () => socket.close()
+    connect()
+    return () => {
+      ws.current?.close()
+    }
   }, [])
 
   const sendCommand = useCallback((command: string) => {
-    ws.current?.send(JSON.stringify({ command }))
+    if (ws.current?.readyState === WebSocket.OPEN) {
+      ws.current.send(JSON.stringify({ command }))
+    }
   }, [])
 
-  return { sendCommand }
+  return { sendCommand, connected }
 }

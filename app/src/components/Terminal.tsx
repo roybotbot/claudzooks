@@ -37,7 +37,7 @@ export function Terminal({ step, cwd, onComplete }: Props) {
     setWaitingToContinue(true)
   }, [])
 
-  const { sendCommand } = useCommandServer(handleResponse)
+  const { sendCommand, connected } = useCommandServer(handleResponse)
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (done) return
@@ -63,6 +63,7 @@ export function Terminal({ step, cwd, onComplete }: Props) {
         return
       }
 
+      if (!connected) return
       setOutputLines(prev => [...prev, `${currentCwd}$ ${trimmed}`])
       setInput('')
       sendCommand(trimmed)
@@ -85,6 +86,13 @@ export function Terminal({ step, cwd, onComplete }: Props) {
       }}
       onClick={() => inputRef.current?.focus()}
     >
+      {/* Connection status */}
+      {!connected && (
+        <div style={{ color: '#f87171', marginBottom: 8, fontSize: 13 }}>
+          ⚠ Not connected to command server. Run: <code>python3 server/ws_server.py</code>
+        </div>
+      )}
+
       {/* Output history */}
       {outputLines.map((line, i) => (
         <div key={i} style={{ color: '#7dd3fc', whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
