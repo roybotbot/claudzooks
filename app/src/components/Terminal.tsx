@@ -100,6 +100,25 @@ export function Terminal({ step, cwd, onComplete }: Props) {
         </div>
       ))}
 
+      {/* Always-present hidden input — captures keypresses in all states */}
+      <input
+        ref={inputRef}
+        value={input}
+        onChange={e => !waitingToContinue && setInput(e.target.value)}
+        onKeyDown={handleKeyDown}
+        style={{
+          position: 'fixed',
+          opacity: 0,
+          pointerEvents: 'none',
+          width: 1,
+          height: 1,
+        }}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
+      />
+
       {/* Press enter to continue */}
       {waitingToContinue && (
         <div style={{ color: '#6b7280', marginTop: 8, fontStyle: 'italic' }}>
@@ -112,28 +131,6 @@ export function Terminal({ step, cwd, onComplete }: Props) {
         <div style={{ display: 'flex', alignItems: 'center', lineHeight: 1.6 }}>
           <span style={{ color: '#6b7280', marginRight: 6 }}>{currentCwd}$</span>
           <div style={{ position: 'relative', flex: 1 }}>
-            {/* Hidden real input */}
-            <input
-              ref={inputRef}
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              style={{
-                position: 'absolute',
-                opacity: 0,
-                width: '100%',
-                height: '100%',
-                top: 0,
-                left: 0,
-                cursor: 'text',
-                border: 'none',
-                outline: 'none',
-              }}
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck={false}
-            />
             {/* Visible text + cursor */}
             <span
               style={{
