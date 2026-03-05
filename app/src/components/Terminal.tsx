@@ -54,7 +54,6 @@ export function Terminal({ step, cwd, onComplete }: Props) {
           <Box>
             <Text dimColor>{currentCwd}$ </Text>
             <Text color="white">{input}</Text>
-            <Text inverse> </Text>
           </Box>
         )}
       </Box>
