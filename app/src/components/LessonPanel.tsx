@@ -10,7 +10,7 @@ interface Props {
 
 export function LessonPanel({ lesson, stepIndex, lessonIndex, totalLessons, onContinue }: Props) {
   const step: LessonStep = lesson.steps[stepIndex]
-  const isTextOnly = !step.command && !step.action
+  const isTextOnly = !step.command
 
   return (
     <div style={{
