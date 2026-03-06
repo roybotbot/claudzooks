@@ -146,7 +146,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
           <div key={i} style={{ marginBottom: 4 }}>
             <div>
               <span style={{ color: '#28c840' }}>{entry.prompt}</span>
-              <span style={{ color: '#888' }}>$ </span>
+              <span style={{ color: '#888' }}>$&nbsp;</span>
               <span style={{ color: '#e2e8f0' }}>{entry.command}</span>
             </div>
             {entry.output && (
@@ -166,7 +166,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
         {!waitingToContinue && (
           <div style={{ display: 'flex', alignItems: 'center', marginTop: 4 }}>
             <span style={{ color: '#28c840' }}>{currentCwd}</span>
-            <span style={{ color: '#888' }}>$ </span>
+            <span style={{ color: '#888' }}>$&nbsp;</span>
             <span style={{ color: shake ? '#f87171' : '#e2e8f0', transition: 'color 0.15s' }}>
               {input}
             </span>
