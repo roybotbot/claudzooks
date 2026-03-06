@@ -4,6 +4,7 @@ export interface LessonStep {
   action?: string;
   interactive?: boolean;
   auto_commands?: string[];
+  annotation?: string;
 }
 
 export interface Lesson {

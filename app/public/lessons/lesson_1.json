@@ -2,35 +2,39 @@
   "title": "Lesson 1: Where am I?",
   "steps": [
     {
-      "text": "Your computer organizes everything into folders (also called\n\"directories\" — same thing, different name). Folders can contain\nfiles and other folders, like nesting boxes inside boxes.\n\nHere's what that looks like:\n\n    /\n    └── Users/\n        └── yourname/\n            ├── Desktop/\n            ├── Documents/\n            ├── Downloads/\n            └── Pictures/\n\nThat tree shape is called a \"path.\" A path is an address that\ntells the computer exactly where something is. For example:\n\n    /Users/yourname/Documents\n\nThat means: start at the very top, go into Users, then yourname,\nthen Documents. Each / separates one folder from the next."
+      "text": "Your computer organizes everything into folders (also called\n\"directories\" \u2014 same thing, different name). Folders can contain\nfiles and other folders, like nesting boxes inside boxes.\n\nHere's what that looks like:\n\n    /\n    \u2514\u2500\u2500 Users/\n        \u2514\u2500\u2500 yourname/\n            \u251c\u2500\u2500 Desktop/\n            \u251c\u2500\u2500 Documents/\n            \u251c\u2500\u2500 Downloads/\n            \u2514\u2500\u2500 Pictures/\n\nThat tree shape is called a \"path.\" A path is an address that\ntells the computer exactly where something is. For example:\n\n    /Users/yourname/Documents\n\nThat means: start at the very top, go into Users, then yourname,\nthen Documents. Each / separates one folder from the next."
     },
     {
-      "text": "When you use the terminal, you're always \"standing inside\" one\nfolder. Think of it like being in a room — you can look around\nand see what's in that room, or walk into a different room.\n\nRight now your terminal is in a folder. Let's find out which one."
+      "text": "When you use the terminal, you're always \"standing inside\" one\nfolder. Think of it like being in a room \u2014 you can look around\nand see what's in that room, or walk into a different room.\n\nRight now your terminal is in a folder. Let's find out which one."
     },
     {
-      "text": "## pwd — print working directory\n\n`pwd` is a command that prints the full path of the folder\nyou're currently in. \"Working directory\" just means\n\"the folder you're in right now.\"\n\nYou'll see something like /Users/yourname.",
-      "command": "pwd"
+      "text": "## pwd \u2014 print working directory\n\n`pwd` is a command that prints the full path of the folder\nyou're currently in. \"Working directory\" just means\n\"the folder you're in right now.\"\n\nYou'll see something like /Users/yourname.",
+      "command": "pwd",
+      "annotation": "pwd = print working directory. This is where you are right now in the file system."
     },
     {
-      "text": "That's your \"home folder\" — the main folder for your user\naccount. Everything you create will usually go somewhere\ninside this folder."
+      "text": "That's your \"home folder\" \u2014 the main folder for your user\naccount. Everything you create will usually go somewhere\ninside this folder."
     },
     {
-      "text": "## ls — list what's here\n\n`ls` is a command that lists everything inside your current\nfolder. You should see familiar names — Desktop, Documents,\nDownloads, and others.",
-      "command": "ls"
+      "text": "## ls \u2014 list what's here\n\n`ls` is a command that lists everything inside your current\nfolder. You should see familiar names \u2014 Desktop, Documents,\nDownloads, and others.",
+      "command": "ls",
+      "annotation": "ls lists everything in your current folder \u2014 same as opening it in Finder."
     },
     {
       "text": "Those are the same folders you'd see if you opened Finder\n(on Mac) or Files (on Linux). The terminal is just another\nway to look at the same stuff."
     },
     {
-      "text": "## ls -la — list everything, with details\n\nCommands can have \"flags\" — extra letters that change what\nthe command does. Flags start with a dash (-).\n\n`ls -la` uses two flags:\n  -l means \"long format\" — show details like size and date\n  -a means \"all\" — include hidden files\n\nHidden files start with a dot (like .zshrc). They're usually\nconfiguration files that you don't need to touch.",
-      "command": "ls -la"
+      "text": "## ls -la \u2014 list everything, with details\n\nCommands can have \"flags\" \u2014 extra letters that change what\nthe command does. Flags start with a dash (-).\n\n`ls -la` uses two flags:\n  -l means \"long format\" \u2014 show details like size and date\n  -a means \"all\" \u2014 include hidden files\n\nHidden files start with a dot (like .zshrc). They're usually\nconfiguration files that you don't need to touch.",
+      "command": "ls -la",
+      "annotation": "-l means show details. -a means show hidden files (the ones starting with a dot)."
     },
     {
-      "text": "Don't worry about all those details. The main thing to notice\nis that there are more items than before — those are the hidden\nfiles that -a revealed."
+      "text": "Don't worry about all those details. The main thing to notice\nis that there are more items than before \u2014 those are the hidden\nfiles that -a revealed."
     },
     {
-      "text": "## clear — clean up the screen\n\n`clear` is a command that wipes everything off the screen.\nYour files are still there — it just removes the visual\nclutter so you have a fresh view. You'll use this a lot.",
-      "command": "clear"
+      "text": "## clear \u2014 clean up the screen\n\n`clear` is a command that wipes everything off the screen.\nYour files are still there \u2014 it just removes the visual\nclutter so you have a fresh view. You'll use this a lot.",
+      "command": "clear",
+      "annotation": "clear wipes the screen. Your history is still there \u2014 just scrolled up."
     },
     {
       "text": "## What you learned\n- A path is an address like /Users/yourname/Documents\n- `pwd` shows which folder you're in\n- `ls` shows what's in your current folder\n- `ls -la` shows everything including hidden files\n- `clear` cleans up the screen\n- Flags like -l and -a modify how commands work\n\nTip: feel free to open a separate terminal window and try\nthese commands on your own. Practice makes them stick!"
