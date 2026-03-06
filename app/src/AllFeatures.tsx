@@ -41,7 +41,7 @@ const TOTAL = DEMO_LESSON.steps.length
 
 export default function AllFeatures() {
   const [stepIndex, setStepIndex] = useState(0)
-  const [annotation, setAnnotation] = useState<string | null>(null)
+  const [annotation, setAnnotation] = useState<{ text: string; y: number } | null>(null)
   const [done, setDone] = useState(false)
 
   const currentStep: LessonStep = DEMO_LESSON.steps[stepIndex]
@@ -121,13 +121,13 @@ export default function AllFeatures() {
             <Terminal
               currentStep={currentStep}
               onStepComplete={advance}
-              onAnnotation={setAnnotation}
+              onAnnotation={(text, y) => setAnnotation({ text, y })}
             />
           </div>
         </div>
 
         {/* Right: annotations */}
-        <AnnotationPanel text={annotation} />
+        <AnnotationPanel text={annotation?.text ?? null} y={annotation?.y ?? null} />
       </div>
     </div>
   )

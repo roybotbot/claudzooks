@@ -12,7 +12,7 @@ interface HistoryEntry {
 interface Props {
   currentStep: LessonStep
   onStepComplete: (newCwd: string) => void
-  onAnnotation: (text: string) => void
+  onAnnotation: (text: string, y: number) => void
 }
 
 export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
@@ -25,6 +25,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
   const pendingCwd = useRef('~')
   const pendingEntry = useRef<HistoryEntry | null>(null)
+  const lastAnnotatedRef = useRef<HTMLDivElement>(null)
 
   // Refocus input whenever state changes
   useEffect(() => {
@@ -36,6 +37,15 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [history, waitingToContinue])
 
+  // After history updates, measure the last annotated entry and emit Y position
+  useEffect(() => {
+    const last = history[history.length - 1]
+    if (last?.annotation && lastAnnotatedRef.current) {
+      const rect = lastAnnotatedRef.current.getBoundingClientRect()
+      onAnnotation(last.annotation, rect.top)
+    }
+  }, [history, onAnnotation])
+
   const handleResponse = useCallback((out: string, newCwd: string, init?: boolean) => {
     if (init) {
       setCurrentCwd(newCwd)
@@ -46,12 +56,11 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
       const entry = { ...pendingEntry.current, output: out }
       pendingEntry.current = null
       setHistory(prev => [...prev, entry])
-      if (entry.annotation) onAnnotation(entry.annotation)
     }
     setCurrentCwd(newCwd)
     pendingCwd.current = newCwd
     setWaitingToContinue(true)
-  }, [onAnnotation])
+  }, [])
 
   const { sendCommand, connected } = useCommandServer(handleResponse)
 
@@ -107,6 +116,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
         gap: 8,
         flexShrink: 0,
         borderBottom: '1px solid #1a1a1a',
+        position: 'relative',
       }}>
         <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#ff5f57', display: 'inline-block' }} />
         <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#febc2e', display: 'inline-block' }} />
@@ -142,18 +152,26 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
         onClick={() => inputRef.current?.focus()}
       >
         {/* History */}
-        {history.map((entry, i) => (
-          <div key={i} style={{ marginBottom: 4 }}>
-            <div>
-              <span style={{ color: '#28c840' }}>{entry.prompt}</span>
-              <span style={{ color: '#888' }}>$&nbsp;</span>
-              <span style={{ color: '#e2e8f0' }}>{entry.command}</span>
+        {history.map((entry, i) => {
+          const isLast = i === history.length - 1
+          const isAnnotated = !!entry.annotation
+          return (
+            <div
+              key={i}
+              style={{ marginBottom: 4 }}
+              ref={isLast && isAnnotated ? lastAnnotatedRef : undefined}
+            >
+              <div>
+                <span style={{ color: '#28c840' }}>{entry.prompt}</span>
+                <span style={{ color: '#888' }}>$&nbsp;</span>
+                <span style={{ color: '#e2e8f0' }}>{entry.command}</span>
+              </div>
+              {entry.output && (
+                <div style={{ color: '#94a3b8', whiteSpace: 'pre-wrap' }}>{entry.output}</div>
+              )}
             </div>
-            {entry.output && (
-              <div style={{ color: '#94a3b8', whiteSpace: 'pre-wrap' }}>{entry.output}</div>
-            )}
-          </div>
-        ))}
+          )
+        })}
 
         {/* Press enter to continue */}
         {waitingToContinue && (

@@ -12,7 +12,7 @@ export default function App() {
   const { progress, setProgress } = useProgress()
   const { lessonIndex, stepIndex, cwd } = progress
   const [lesson, setLesson] = useState<Lesson | null>(null)
-  const [annotation, setAnnotation] = useState<string | null>(null)
+  const [annotation, setAnnotation] = useState<{ text: string; y: number } | null>(null)
 
   useEffect(() => {
     setLesson(null)
@@ -34,8 +34,8 @@ export default function App() {
 
   const advanceStep = useCallback(() => advance(cwd), [advance, cwd])
 
-  const handleAnnotation = useCallback((text: string) => {
-    setAnnotation(text)
+  const handleAnnotation = useCallback((text: string, y: number) => {
+    setAnnotation({ text, y })
   }, [])
 
   if (!lesson) {
@@ -103,7 +103,7 @@ export default function App() {
       </div>
 
       {/* Right: annotations */}
-      <AnnotationPanel text={annotation} />
+      <AnnotationPanel text={annotation?.text ?? null} y={annotation?.y ?? null} />
     </div>
   )
 }

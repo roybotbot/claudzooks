@@ -1,36 +1,36 @@
 interface Props {
   text: string | null
+  y: number | null
 }
 
-export function AnnotationPanel({ text }: Props) {
-  if (!text) return <div style={{ width: 220, flexShrink: 0 }} />
+export function AnnotationPanel({ text, y }: Props) {
+  if (!text || y === null) return null
 
   return (
     <div style={{
-      width: 220,
-      flexShrink: 0,
-      display: 'flex',
-      alignItems: 'flex-end',
-      paddingBottom: '3rem',
-      paddingLeft: '0.5rem',
+      position: 'fixed',
+      top: y,
+      right: 16,
+      width: 200,
+      zIndex: 100,
+      transition: 'top 0.2s ease',
     }}>
-      <div style={{ position: 'relative' }}>
-        {/* Arrow pointing left toward terminal */}
+      {/* Arrow pointing left toward terminal */}
+      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
         <div style={{
-          position: 'absolute',
-          left: -10,
-          bottom: 14,
           width: 0,
           height: 0,
-          borderTop: '8px solid transparent',
-          borderBottom: '8px solid transparent',
-          borderRight: '10px solid #1e3a5f',
+          borderTop: '7px solid transparent',
+          borderBottom: '7px solid transparent',
+          borderRight: '8px solid #2563eb',
+          marginTop: 10,
+          flexShrink: 0,
         }} />
         <div style={{
           background: '#1e3a5f',
           border: '1px solid #2563eb',
           borderRadius: 8,
-          padding: '10px 14px',
+          padding: '8px 12px',
           color: '#bfdbfe',
           fontSize: 12,
           lineHeight: 1.6,
