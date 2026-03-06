@@ -10,6 +10,8 @@ sessions = {}  # websocket -> cwd
 
 async def handler(websocket):
     sessions[websocket] = Path.home()
+    # Send initial cwd so client can sync
+    await websocket.send(json.dumps({"output": "", "cwd": str(Path.home()), "init": True}))
     try:
         async for message in websocket:
             data = json.loads(message)

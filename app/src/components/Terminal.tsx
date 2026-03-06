@@ -30,7 +30,13 @@ export function Terminal({ step, cwd, onComplete }: Props) {
 
   const pendingCwd = useRef<string>(cwd)
 
-  const handleResponse = useCallback((out: string, newCwd: string) => {
+  const handleResponse = useCallback((out: string, newCwd: string, init?: boolean) => {
+    if (init) {
+      // Just sync the cwd, don't show output or prompt to continue
+      setCurrentCwd(newCwd)
+      pendingCwd.current = newCwd
+      return
+    }
     setOutputLines(prev => [...prev, ...(out ? [out] : [])])
     setCurrentCwd(newCwd)
     pendingCwd.current = newCwd

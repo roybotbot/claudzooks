@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 
-type ResponseHandler = (output: string, cwd: string) => void
+type ResponseHandler = (output: string, cwd: string, init?: boolean) => void
 
 export function useCommandServer(onResponse: ResponseHandler) {
   const ws = useRef<WebSocket | null>(null)
@@ -19,8 +19,8 @@ export function useCommandServer(onResponse: ResponseHandler) {
       }
       socket.onerror = () => setConnected(false)
       socket.onmessage = (e) => {
-        const { output, cwd } = JSON.parse(e.data)
-        handler.current(output, cwd)
+        const { output, cwd, init } = JSON.parse(e.data)
+        handler.current(output, cwd, init)
       }
       ws.current = socket
     }
