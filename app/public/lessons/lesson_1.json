@@ -2,6 +2,9 @@
   "title": "Lesson 1: Where am I?",
   "steps": [
     {
+      "text": "In the terminal, you type a command on a line and press Return. The result appears below what you typed. Then a new line appears, ready for your next command.\n\nThat's it \u2014 that's the whole interaction. Type, press Return, read the result. Let's try it."
+    },
+    {
       "text": "Your computer organizes everything into folders (also called \"directories\" \u2014 same thing, different name). Folders can contain files and other folders, like nesting boxes inside boxes.\n\nHere's what that looks like:\n\n    /\n    \u2514\u2500\u2500 Users/\n        \u2514\u2500\u2500 yourname/\n            \u251c\u2500\u2500 Desktop/\n            \u251c\u2500\u2500 Documents/\n            \u251c\u2500\u2500 Downloads/\n            \u2514\u2500\u2500 Pictures/\n\nThat tree shape is called a \"path.\" A path is an address that tells the computer exactly where something is. For example:\n\n    /Users/yourname/Documents\n\nThat means: start at the very top, go into Users, then yourname, then Documents. Each / separates one folder from the next."
     },
     {
