@@ -21,6 +21,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
   const [currentCwd, setCurrentCwd] = useState('~')
   const [waitingToContinue, setWaitingToContinue] = useState(false)
   const [shake, setShake] = useState(false)
+  const [focused, setFocused] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const pendingCwd = useRef('~')
@@ -103,15 +104,20 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
   }
 
   return (
-    <div style={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      borderRadius: 10,
-      overflow: 'hidden',
-      boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
-      border: '1px solid #3a3a3a',
-    }}>
+    <div
+      style={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: 10,
+        overflow: 'hidden',
+        boxShadow: focused
+          ? '0 0 0 2px #3b82f6, 0 20px 60px rgba(0,0,0,0.6)'
+          : '0 20px 60px rgba(0,0,0,0.6)',
+        border: focused ? '1px solid #3b82f6' : '1px solid #3a3a3a',
+        transition: 'box-shadow 0.2s, border-color 0.2s',
+      }}
+    >
       {/* Title bar */}
       <div style={{
         background: '#2d2d2d',
@@ -205,11 +211,19 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
               display: 'inline-block',
               width: 8,
               height: 14,
-              background: '#e2e8f0',
+              background: focused ? '#e2e8f0' : '#555',
               marginLeft: 1,
               verticalAlign: 'middle',
-              animation: 'blink 1s step-end infinite',
+              animation: focused ? 'blink 1s step-end infinite' : 'none',
+              transition: 'background 0.2s',
             }} />
+          </div>
+        )}
+
+        {/* Click to focus hint */}
+        {!focused && (
+          <div style={{ color: '#444', fontSize: 11, marginTop: 12, textAlign: 'center' }}>
+            click here to type
           </div>
         )}
 
@@ -222,6 +236,8 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
         value={input}
         onChange={e => !waitingToContinue && setInput(e.target.value)}
         onKeyDown={handleKeyDown}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         style={{ position: 'fixed', opacity: 0, pointerEvents: 'none', width: 1, height: 1 }}
         autoComplete="off"
         autoCorrect="off"
