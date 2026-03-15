@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Lesson, LessonStep } from '../lessons'
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 export function LessonPanel({ lesson, stepIndex, lessonIndex, totalLessons, onContinue }: Props) {
   const step: LessonStep = lesson.steps[stepIndex]
   const isTextOnly = !step.command
+  const [showNudge, setShowNudge] = useState(false)
 
   return (
     <div style={{
@@ -67,8 +69,26 @@ export function LessonPanel({ lesson, stepIndex, lessonIndex, totalLessons, onCo
 
       {isTextOnly && onContinue && (
         <div style={{ padding: '1rem 2rem', borderTop: '1px solid #1f2937' }}>
+          {showNudge && (
+            <div style={{
+              marginBottom: '0.75rem',
+              padding: '8px 12px',
+              background: '#1e3a5f',
+              border: '1px solid #2563eb',
+              borderRadius: 6,
+              color: '#bfdbfe',
+              fontSize: 12,
+              lineHeight: 1.5,
+            }}>
+              💡 Try pressing <strong>Enter</strong> in the terminal instead — you're learning to work without a mouse!
+            </div>
+          )}
           <button
-            onClick={onContinue}
+            onClick={() => {
+              setShowNudge(true)
+              setTimeout(() => setShowNudge(false), 4000)
+              if (onContinue) onContinue()
+            }}
             style={{
               width: '100%',
               padding: '0.75rem',

@@ -72,6 +72,12 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
         return
       }
 
+      // Text-only step (no command) — Enter advances
+      if (!currentStep.command) {
+        onStepComplete(pendingCwd.current)
+        return
+      }
+
       const trimmed = input.trim()
       if (!trimmed) return
 
@@ -180,8 +186,15 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
           </div>
         )}
 
+        {/* Text-only step hint */}
+        {!waitingToContinue && !currentStep.command && (
+          <div style={{ color: '#555', fontStyle: 'italic', marginTop: 4 }}>
+            — press enter to continue —
+          </div>
+        )}
+
         {/* Current prompt */}
-        {!waitingToContinue && (
+        {!waitingToContinue && currentStep.command && (
           <div style={{ display: 'flex', alignItems: 'center', marginTop: 4 }}>
             <span style={{ color: '#28c840' }}>{currentCwd}</span>
             <span style={{ color: '#888' }}>$&nbsp;</span>
