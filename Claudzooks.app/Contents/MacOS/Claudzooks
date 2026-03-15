@@ -1,12 +1,17 @@
 #!/bin/bash
-cd "$(dirname "$0")"
+
+# Navigate to the project root (two levels up from Contents/MacOS/)
+cd "$(dirname "$0")/../../.."
 
 # Build if needed
 if [ ! -d "app/dist" ]; then
-  echo "Building app (one-time)..."
+  echo "Building app (one-time setup)..."
   ./bin/bun install --cwd app
   ./bin/bun run --cwd app build
 fi
+
+# Kill any existing instance
+lsof -ti:5555 | xargs kill -9 2>/dev/null
 
 # Start server
 ./bin/bun server.ts &

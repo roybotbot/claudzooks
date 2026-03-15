@@ -4,85 +4,46 @@
 
 Learn the terminal and build your first web app with AI.
 
-Claudzooks is a guided, interactive terminal trainer that takes you from
-"I've never opened a terminal" to "I just built a web app using an AI
-coding assistant." You learn by doing — every command runs in a real
-terminal, right inside the lesson.
+## Getting Started (macOS)
 
-## Requirements
+1. [Download this project](https://github.com/roybotbot/claudzooks/archive/refs/heads/main.zip) and unzip it
+2. Double-click **Claudzooks** (the app icon)
+3. First time only: macOS will say it can't verify the developer — right-click the app, click **Open**, then click **Open** again
+4. Your browser opens automatically — follow the lessons inside
 
-- macOS or Linux
-- Python 3.11 or higher
+That's it. No install required.
 
-### Check if Python is installed
+## What You'll Learn
 
-Open your terminal and type:
-
-    python3 --version
-
-If you see "Python 3.11" or higher, you're set.
-
-If not, install Python:
-- macOS: Download from https://www.python.org/downloads/
-- Linux (Ubuntu/Debian): `sudo apt install python3`
-
-### Claude Code (needed for Lessons 6-7)
-
-You need a Claude subscription (Pro, Max, or Team) at https://claude.ai
-
-Install Claude Code:
-
-1. Open your terminal and run:
-
-       curl -fsSL https://claude.ai/install.sh | bash
-
-2. Restart your terminal (close and reopen it)
-
-3. Verify it works:
-
-       claude --version
-
-## Getting started
-
-### macOS
-Double-click the `start.command` file. A terminal window will open
-and the lessons will start.
-
-If macOS says the file can't be opened because it's from an
-unidentified developer: right-click the file, select "Open",
-and click "Open" in the dialog.
-
-### Linux
-Open a terminal in the claudzooks folder and run:
-
-    ./start.sh
-
-## What you'll learn
-
-- **Lesson 0:** Prerequisites check
-- **Lesson 1:** Navigating the terminal (`pwd`, `ls`, `clear`)
+- **Lesson 0:** Welcome
+- **Lesson 1:** Where am I? (`pwd`, `ls`, `ls -la`, `clear`)
 - **Lesson 2:** Moving around (`cd`, `mkdir`, `rmdir`)
 - **Lesson 3:** Working with files (`touch`, `echo`, `cat`, `cp`, `mv`, `rm`)
-- **Lesson 4:** Reading and editing files (`head`, `tail`, `less`, `nano`)
-- **Lesson 5:** Mini-project — build a project folder from scratch
-- **Lesson 6:** Introduction to Claude Code
-- **Lesson 7:** Build a web app with AI
+- **Lesson 4:** Reading and editing (`head`, `tail`, `less`, `nano`)
+- **Lesson 5:** Putting it together — build a project folder from scratch
+- **Lesson 6:** Meet your AI pair programmer (Claude Code)
+- **Lesson 7:** Build something real
 
-## To Do Next
+## Development (contributors only)
 
-### Content
-- Change the final project to something more interesting than a contact form
-- Add Lesson 8: Claude Code best practices (how to not mess your computer up)
-- Add Lesson 9: Iterating on a project with Claude (tweaking and updating)
-- Improve CLAUDE.md templates to better guide beginners during AI lessons
+<details>
+<summary>Setting up a dev environment</summary>
 
-### Features
-- Automated validation (check if files exist, contents match)
-- Separate reference file for Claude lessons (instructions get pushed off screen)
-- Quiz/checkpoint sections before dangerous commands
-- XP / progress bar / completion percentages
+Requires [Bun](https://bun.sh).
 
-### Distribution
-- `pip install claudzooks` packaging
-- Windows support
-- Unit tests
+```bash
+# Install dependencies
+cd app && bun install
+
+# Start dev server (hot reload)
+cd app && bun run dev
+
+# Start command server (separate terminal)
+bun server.ts
+
+# Build for distribution
+cd app && bun run build
+```
+
+The dev React app runs on `http://localhost:5173` and connects to the command server on `ws://localhost:5555/ws`. The production build is served directly by `server.ts` on port 5555.
+</details>

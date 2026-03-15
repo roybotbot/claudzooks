@@ -1,0 +1,66 @@
+{
+  "title": "Lesson 5: Putting it together",
+  "steps": [
+    {
+      "text": "Time to combine everything you've learned. You're going to create the project folder where you'll build a real web app in the next lessons.\n\nNote: if your terminal instructions scroll off the screen at any point, you can scroll up to see them again.\n\nHere's what you'll build:\n\n    ~/claudzooks-project/\n    \u251c\u2500\u2500 index.html\n    \u251c\u2500\u2500 style.css\n    \u2514\u2500\u2500 notes.txt"
+    },
+    {
+      "text": "Go to your home folder:",
+      "command": "cd ~"
+    },
+    {
+      "text": "Create the project folder:",
+      "command": "mkdir claudzooks-project"
+    },
+    {
+      "text": "Go into it:",
+      "command": "cd claudzooks-project"
+    },
+    {
+      "text": "Create the three files. `touch` creates an empty file \u2014 you learned this in Lesson 3.",
+      "command": "touch index.html"
+    },
+    {
+      "command": "touch style.css"
+    },
+    {
+      "command": "touch notes.txt"
+    },
+    {
+      "text": "Open Finder and navigate to your home folder. You should see \"claudzooks-project\" right there, and inside it, the three files you just created. You did that with the terminal!\n\nNow let's add some content. This is the starter code for a web page:"
+    },
+    {
+      "text": "Write the HTML into index.html:",
+      "command": "echo \"<!DOCTYPE html>\" > index.html"
+    },
+    {
+      "command": "echo \"<html><head><title>My First Web App</title></head>\" >> index.html"
+    },
+    {
+      "command": "echo \"<body><h1>Hello!</h1></body></html>\" >> index.html"
+    },
+    {
+      "text": "Add a note to notes.txt:",
+      "command": "echo \"This project was created during Claudzooks Lesson 5.\" > notes.txt"
+    },
+    {
+      "text": "Verify everything looks right:",
+      "command": "ls -la"
+    },
+    {
+      "command": "cat index.html"
+    },
+    {
+      "command": "cat notes.txt"
+    },
+    {
+      "text": "Now for the exciting part \u2014 let's open your web page in a browser! You should see a page that says \"Hello!\"\n\nYou made a web page using nothing but terminal commands.",
+      "command": "open index.html",
+      "interactive": true
+    },
+    {
+      "text": "Now let's save where your project lives so the next lessons can find it.",
+      "action": "get_project_dir"
+    }
+  ]
+}

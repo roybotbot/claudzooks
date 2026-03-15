@@ -1,0 +1,11 @@
+{
+  "title": "Lesson 0: Welcome",
+  "steps": [
+    {
+      "text": "Welcome to Claudzooks!\n\nYou're about to learn how to use the terminal \u2014 a powerful, text-based way to control your computer. By the end, you'll build a real web page using an AI coding assistant.\n\nThe terminal is different from what you're used to. There's no mouse, no clicking, no dragging. Everything happens through the keyboard."
+    },
+    {
+      "text": "Here's what you'll learn:\n\n- Lessons 1\u20135: Terminal basics \u2014 navigating folders, creating files, reading and editing text\n- Lesson 6: Introduction to Claude Code, an AI coding assistant\n- Lesson 7: Build a real web app with AI\n\nNo experience needed. Let's go!"
+    }
+  ]
+}

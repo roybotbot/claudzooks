@@ -1,0 +1,66 @@
+{
+  "title": "Lesson 2: Moving around",
+  "steps": [
+    {
+      "text": "Now that you know where you are and what's around you, let's move between folders."
+    },
+    {
+      "text": "## cd \u2014 change directory\n\n`cd` is a command that moves you into a different folder. Think of it like walking from one room into another.\n\nLet's go to your Desktop folder.",
+      "command": "cd Desktop"
+    },
+    {
+      "text": "Now check where you are with `pwd`:",
+      "command": "pwd"
+    },
+    {
+      "text": "See how the path changed? You're now inside Desktop. Let's see what's on your Desktop from the terminal:",
+      "command": "ls"
+    },
+    {
+      "text": "## cd .. \u2014 go up one level\n\nThe two dots (..) mean \"the folder above this one\" \u2014 also called the \"parent folder.\" If you're inside Desktop, the parent is your home folder.\n\n`cd ..` moves you up one level.",
+      "command": "cd .."
+    },
+    {
+      "text": "Confirm you're back where you started:",
+      "command": "pwd"
+    },
+    {
+      "text": "## cd ~ \u2014 go home\n\nNo matter where you are, `cd ~` takes you back to your home folder. The ~ character (called \"tilde\") is shorthand for your home directory. You'll see it used everywhere.",
+      "command": "cd ~"
+    },
+    {
+      "text": "## Absolute vs relative paths\n\nWhen you typed `cd Desktop`, that was a \"relative path\" \u2014 relative to wherever you happened to be standing.\n\nYou can also use an \"absolute path,\" which spells out the full address starting from the very top:\n\n    cd /Users/yourname/Desktop\n\n(Replace \"yourname\" with your actual username.)\n\nThe / at the very beginning is called the \"root.\" Root is the top-level folder that contains everything on your computer. Every absolute path starts from root.\n\n    /                        \u2190 root (the top)\n    \u2514\u2500\u2500 Users/\n        \u2514\u2500\u2500 yourname/        \u2190 your home folder (~)\n            \u2514\u2500\u2500 Desktop/     \u2190 where we just were\n\nAbsolute paths start with /. Relative paths don't."
+    },
+    {
+      "text": "## mkdir \u2014 make a new folder\n\n`mkdir` is a command that creates a new folder. The name stands for \"make directory\" (directory = folder).\n\nFirst, make sure you're home:",
+      "command": "cd ~"
+    },
+    {
+      "text": "Now create a folder called \"practice\":",
+      "command": "mkdir practice"
+    },
+    {
+      "text": "Check that it exists:",
+      "command": "ls"
+    },
+    {
+      "text": "You just created a folder using the terminal!\n\nTry this: open Finder (on Mac) or your file manager and navigate to your home folder. You should see a folder called \"practice\" right there. You made that!\n\nNow let's go into it:",
+      "command": "cd practice"
+    },
+    {
+      "text": "Check where you are:",
+      "command": "pwd"
+    },
+    {
+      "text": "Go back up to your home folder:",
+      "command": "cd .."
+    },
+    {
+      "text": "## rmdir \u2014 remove an empty folder\n\n`rmdir` is a command that deletes an empty folder. It only works if there's nothing inside the folder.\n\nLet's clean up the practice folder:",
+      "command": "rmdir practice"
+    },
+    {
+      "text": "## What you learned\n- `cd` moves you into a folder\n- `cd ..` goes up one level to the parent folder\n- `cd ~` goes to your home folder from anywhere\n- Absolute paths start from root (/), relative paths don't\n- Root (/) is the top-level folder on your computer\n- `mkdir` creates a new folder\n- `rmdir` removes an empty folder"
+    }
+  ]
+}
