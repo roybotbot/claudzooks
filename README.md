@@ -16,13 +16,13 @@ That's it. No install required.
 ## What You'll Learn
 
 - **Lesson 0:** Welcome
-- **Lesson 1:** Navigating the terminal (`pwd`, `ls`, `clear`)
+- **Lesson 1:** Where am I? (`pwd`, `ls`, `ls -la`, `clear`)
 - **Lesson 2:** Moving around (`cd`, `mkdir`, `rmdir`)
 - **Lesson 3:** Working with files (`touch`, `echo`, `cat`, `cp`, `mv`, `rm`)
-- **Lesson 4:** Reading and editing files (`head`, `tail`, `less`, `nano`)
-- **Lesson 5:** Mini-project — build a project folder from scratch
-- **Lesson 6:** Introduction to Claude Code
-- **Lesson 7:** Build a web app with AI
+- **Lesson 4:** Reading and editing (`head`, `tail`, `less`, `nano`)
+- **Lesson 5:** Putting it together — build a project folder from scratch
+- **Lesson 6:** Meet your AI pair programmer (Claude Code)
+- **Lesson 7:** Build something real
 
 ## Development
 
