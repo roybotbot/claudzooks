@@ -24,7 +24,10 @@ That's it. No install required.
 - **Lesson 6:** Meet your AI pair programmer (Claude Code)
 - **Lesson 7:** Build something real
 
-## Development
+## Development (contributors only)
+
+<details>
+<summary>Setting up a dev environment</summary>
 
 Requires [Bun](https://bun.sh).
 
@@ -43,3 +46,4 @@ cd app && bun run build
 ```
 
 The dev React app runs on `http://localhost:5173` and connects to the command server on `ws://localhost:5555/ws`. The production build is served directly by `server.ts` on port 5555.
+</details>
