@@ -3,3 +3,5 @@ progress.json
 *.pyc
 docs/
 .worktrees/
+bin/
+app/dist/
