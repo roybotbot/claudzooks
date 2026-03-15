@@ -2,19 +2,40 @@
 
 # Navigate to the project root (two levels up from Contents/MacOS/)
 cd "$(dirname "$0")/../../.."
+ROOT="$(pwd)"
 
-# Build if needed
-if [ ! -d "app/dist" ]; then
-  echo "Building app (one-time setup)..."
-  ./bin/bun install --cwd app
-  ./bin/bun run --cwd app build
+# Install bun if needed
+if [ ! -f "$ROOT/bin/bun" ]; then
+  osascript -e 'display notification "Setting up Claudzooks for the first time..." with title "Claudzooks"'
+  mkdir -p "$ROOT/bin"
+  
+  # Detect architecture
+  ARCH=$(uname -m)
+  if [ "$ARCH" = "arm64" ]; then
+    BUN_URL="https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-aarch64.zip"
+  else
+    BUN_URL="https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-x64.zip"
+  fi
+
+  curl -fsSL "$BUN_URL" -o /tmp/bun.zip
+  unzip -o /tmp/bun.zip -d /tmp/bun-extract
+  cp /tmp/bun-extract/*/bun "$ROOT/bin/bun"
+  chmod +x "$ROOT/bin/bun"
+  rm -rf /tmp/bun.zip /tmp/bun-extract
+fi
+
+# Install dependencies and build if needed
+if [ ! -d "$ROOT/app/dist" ]; then
+  osascript -e 'display notification "Building app (one-time)..." with title "Claudzooks"'
+  "$ROOT/bin/bun" install --cwd "$ROOT/app"
+  "$ROOT/bin/bun" run --cwd "$ROOT/app" build
 fi
 
 # Kill any existing instance
 lsof -ti:5555 | xargs kill -9 2>/dev/null
 
 # Start server
-./bin/bun server.ts &
+"$ROOT/bin/bun" "$ROOT/server.ts" &
 SERVER_PID=$!
 
 # Wait for server, then open browser
