@@ -5,7 +5,7 @@
       "text": "Welcome to Claudzooks!\n\nYou're about to learn how to use the terminal \u2014 a powerful, text-based way to control your computer. By the end, you'll build a real web page using an AI coding assistant.\n\nThe terminal is different from what you're used to. There's no mouse, no clicking, no dragging. Everything happens through the keyboard. The terminal was invented before the mouse existed. It's the most fundamental way to talk to a computer, and it's still how most professional software gets built."
     },
     {
-      "text": "Before we start, let's make sure your computer is set up.\n\nYou need Python 3.11 or newer. If you're seeing this message, Python is already installed \u2014 Claudzooks wouldn't run otherwise. \u2713"
+      "text": "Before we start, let\u2019s make sure your computer is set up.\n\nYou\u2019ll need Python installed for later lessons (6 and 7). Don\u2019t worry about it now \u2014 we\u2019ll check when the time comes."
     },
     {
       "text": "Claude Code is an AI coding tool that runs in your terminal. You won't need it until Lesson 6, but here's how to install it later:\n\n1. You need a Claude subscription (Pro, Max, or Team) at claude.ai\n2. Open your terminal and run:\n       curl -fsSL https://claude.ai/install.sh | bash\n3. Restart your terminal (close and reopen it)\n4. Run: claude\n5. Follow the prompts to log in",
