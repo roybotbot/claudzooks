@@ -7,8 +7,8 @@ Learn the terminal and build your first web app with AI.
 ## Getting Started (macOS)
 
 1. [Download this project](https://github.com/roybotbot/claudzooks/archive/refs/heads/main.zip) and unzip it
-2. Double-click `start.command`
-3. If macOS blocks it: right-click → Open → Open
+2. Double-click **Claudzooks** (the app icon)
+3. First time only: macOS will say it can't verify the developer — right-click the app, click **Open**, then click **Open** again
 4. Your browser opens automatically — follow the lessons inside
 
 That's it. No install required.
