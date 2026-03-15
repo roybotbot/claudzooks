@@ -2,7 +2,7 @@
   "title": "Lesson 7: Build something real",
   "steps": [
     {
-      "text": "You're going to build a contact form — a real web page where\nsomeone can type their name, email, and a message. The form\nwon't actually send anything (that needs a server, which is\nbeyond this lesson), but it will look and work like a real\nweb page with validation and a confirmation message.",
+      "text": "You're going to build a contact form \u2014 a real web page where someone can type their name, email, and a message. The form won't actually send anything (that needs a server, which is beyond this lesson), but it will look and work like a real web page with validation and a confirmation message.",
       "action": "install_claude_md_7"
     },
     {
@@ -10,12 +10,12 @@
       "command": "cd ~/claudzooks-project"
     },
     {
-      "text": "Important: Claude Code will take over your terminal.\nYou won't see these instructions while Claude is running.\n\nHere's what to tell Claude:\n\n    Build a contact form page in index.html. Requirements:\n    - A heading that says \"Contact Me\"\n    - Three form fields: Name, Email, and Message\n    - Message should be a larger text area, not a single line\n    - A Submit button\n    - When Submit is clicked, check all fields are filled in\n    - If any field is empty, show a red error message\n    - If all fields are filled, show a green \"Thanks!\" message\n    - Hide the form after successful submission\n    - All CSS in a <style> tag, all JavaScript in a <script> tag\n    - Make it look clean and modern\n    - Everything in one single index.html file\n\nWatch how Claude builds it step by step. Ask questions like:\n    Explain how the form validation works.\n    What does addEventListener do?\n\nTry customizing it:\n    Change the color scheme to dark mode.\n    Add a \"Phone Number\" field that's optional.\n    Add my name to the heading.\n\nType /exit when you're done.\n\nReady? Start Claude Code:",
+      "text": "Important: Claude Code will take over your terminal. You won't see these instructions while Claude is running.\n\nHere's what to tell Claude:\n\n    Build a contact form page in index.html. Requirements:\n    - A heading that says \"Contact Me\"\n    - Three form fields: Name, Email, and Message\n    - Message should be a larger text area, not a single line\n    - A Submit button\n    - When Submit is clicked, check all fields are filled in\n    - If any field is empty, show a red error message\n    - If all fields are filled, show a green \"Thanks!\" message\n    - Hide the form after successful submission\n    - All CSS in a <style> tag, all JavaScript in a <script> tag\n    - Make it look clean and modern\n    - Everything in one single index.html file\n\nWatch how Claude builds it step by step. Ask questions like:\n    Explain how the form validation works.\n    What does addEventListener do?\n\nTry customizing it:\n    Change the color scheme to dark mode.\n    Add a \"Phone Number\" field that's optional.\n    Add my name to the heading.\n\nType /exit when you're done.\n\nReady? Start Claude Code:",
       "command": "claude",
       "interactive": true
     },
     {
-      "text": "Welcome back! Let's see your finished page.\nOpen it in the browser:",
+      "text": "Welcome back! Let's see your finished page. Open it in the browser:",
       "command": "open index.html",
       "interactive": true
     },
@@ -23,7 +23,7 @@
       "text": "Try it out:\n- Submit with empty fields (you should see a red error)\n- Fill everything in and submit (you should see green)\n\nYou built that. Using the terminal and an AI pair programmer."
     },
     {
-      "text": "## What you learned\n- How to give Claude Code a detailed spec for a real page\n- HTML forms: input fields, text areas, buttons\n- CSS: layout, colors, fonts, spacing\n- JavaScript: form validation, showing/hiding elements\n- How to iterate and customize by asking for changes\n\nYou started this course not knowing what a terminal was.\nNow you can navigate folders, create files, edit them,\nand build a web page with an AI assistant. That's real\nskill. Keep practicing and keep building!"
+      "text": "## What you learned\n- How to give Claude Code a detailed spec for a real page\n- HTML forms: input fields, text areas, buttons\n- CSS: layout, colors, fonts, spacing\n- JavaScript: form validation, showing/hiding elements\n- How to iterate and customize by asking for changes\n\nYou started this course not knowing what a terminal was. Now you can navigate folders, create files, edit them, and build a web page with an AI assistant. That's real skill. Keep practicing and keep building!"
     }
   ]
 }
