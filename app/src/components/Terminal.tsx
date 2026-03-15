@@ -112,9 +112,9 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
         borderRadius: 10,
         overflow: 'hidden',
         boxShadow: focused
-          ? '0 0 0 2px #3b82f6, 0 20px 60px rgba(0,0,0,0.6)'
+          ? '0 0 12px rgba(59,130,246,0.15), 0 20px 60px rgba(0,0,0,0.6)'
           : '0 20px 60px rgba(0,0,0,0.6)',
-        border: focused ? '1px solid #3b82f6' : '1px solid #3a3a3a',
+        border: focused ? '1px solid rgba(59,130,246,0.35)' : '1px solid #3a3a3a',
         transition: 'box-shadow 0.2s, border-color 0.2s',
       }}
     >
