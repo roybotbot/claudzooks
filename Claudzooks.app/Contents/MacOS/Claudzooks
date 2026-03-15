@@ -6,7 +6,7 @@ ROOT="$(pwd)"
 
 # Install bun if needed
 if [ ! -f "$ROOT/bin/bun" ]; then
-  osascript -e 'display notification "Setting up Claudzooks for the first time..." with title "Claudzooks"'
+  osascript -e 'display dialog "First-time setup — this will take about 30 seconds." buttons {"OK"} default button "OK" with title "Claudzooks" with icon note'
   mkdir -p "$ROOT/bin"
   
   # Detect architecture
@@ -26,7 +26,6 @@ fi
 
 # Install dependencies and build if needed
 if [ ! -d "$ROOT/app/dist" ]; then
-  osascript -e 'display notification "Building app (one-time)..." with title "Claudzooks"'
   "$ROOT/bin/bun" install --cwd "$ROOT/app"
   "$ROOT/bin/bun" run --cwd "$ROOT/app" build
 fi
