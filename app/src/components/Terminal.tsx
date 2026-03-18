@@ -94,6 +94,13 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
 
     if (!connected) return
 
+    // clear command: wipe the terminal history
+    if (trimmed === 'clear') {
+      setHistory([])
+      setWaitingToContinue(true)
+      return
+    }
+
     pendingAnnotation.current = currentStep.annotation
     setInputValue('')
     sendCommand(trimmed)
