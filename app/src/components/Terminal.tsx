@@ -167,7 +167,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
             canvas.addEventListener('blur', () => setFocused(false))
           }}
         >
-          <box flexDirection="column" width="100%" height="100%" padding={1}>
+          <box flexDirection="column" width="100%" padding={1}>
             {/* History */}
             {history.map((entry, i) => (
               <box key={i} flexDirection="column">
@@ -176,18 +176,18 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
                   <span style={{ fg: '#888888' }}>{'$ '}</span>
                   <span style={{ fg: '#e2e8f0' }}>{entry.command}</span>
                 </text>
-                {entry.output ? (
-                  <text fg="#94a3b8">{entry.output}</text>
-                ) : null}
+                {entry.output ? entry.output.split('\n').map((line, j) => (
+                  <text key={j} fg="#94a3b8">{line}</text>
+                )) : null}
               </box>
             ))}
 
             {/* Status / prompt */}
-            {waitingToContinue ? (
+            {(waitingToContinue || !currentStep.command) && (
               <text fg="#555555">— press enter to continue —</text>
-            ) : !currentStep.command ? (
-              <text fg="#555555">— press enter to continue —</text>
-            ) : (
+            )}
+
+            {!waitingToContinue && currentStep.command && (
               <box flexDirection="row">
                 <text>
                   <span style={{ fg: '#28c840' }}>{currentCwd}</span>
@@ -197,15 +197,27 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
                   value={inputValue}
                   onInput={handleInput}
                   onSubmit={handleSubmit}
-                  focused={true}
+                  focused
                   textColor="#e2e8f0"
-                  cursorColor="#e2e8f0"
-                  cursorStyle={{ style: 'block', blinking: true }}
+                  cursorColor="#ffffff"
+                  cursorStyle="block"
                 />
               </box>
             )}
 
-            {!focused && (
+            {/* Hidden input to capture Enter for text-only steps and continue prompts */}
+            {(waitingToContinue || !currentStep.command) && (
+              <input
+                value=""
+                onInput={() => {}}
+                onSubmit={handleSubmit}
+                focused
+                textColor="#1a1a1a"
+                cursorColor="#1a1a1a"
+              />
+            )}
+
+            {!focused && currentStep.command && !waitingToContinue && (
               <text fg="#444444" marginTop={1}>click here to type</text>
             )}
           </box>

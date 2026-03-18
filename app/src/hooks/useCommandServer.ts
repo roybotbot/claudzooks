@@ -10,8 +10,10 @@ export function useCommandServer(onResponse: ResponseHandler) {
 
   useEffect(() => {
     function connect() {
-      const wsUrl = window.location.hostname === 'localhost' && window.location.port === '5173'
-        ? 'ws://localhost:5555/ws'  // dev mode: Vite on 5173, server on 5555
+      const port = window.location.port
+      const isDev = window.location.hostname === 'localhost' && port !== '5555'
+      const wsUrl = isDev
+        ? 'ws://localhost:5555/ws'  // dev mode: any port, server on 5555
         : `ws://${window.location.host}/ws`  // production: same origin
       const socket = new WebSocket(wsUrl)
       socket.onopen = () => setConnected(true)

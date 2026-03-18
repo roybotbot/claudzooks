@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { loadLesson } from './lessons'
 import type { Lesson } from './lessons'
 import { LessonPanel } from './components/LessonPanel'
@@ -37,6 +37,27 @@ export default function App() {
   const handleAnnotation = useCallback((text: string, y: number) => {
     setAnnotation({ text, y })
   }, [])
+
+  // Dev mode: [ and ] to jump between lessons
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === ']') {
+        setProgress(prev => ({
+          ...prev,
+          lessonIndex: Math.min(prev.lessonIndex + 1, TOTAL_LESSONS - 1),
+          stepIndex: 0,
+        }))
+      } else if (e.key === '[') {
+        setProgress(prev => ({
+          ...prev,
+          lessonIndex: Math.max(prev.lessonIndex - 1, 0),
+          stepIndex: 0,
+        }))
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [setProgress])
 
   if (!lesson) {
     return (
