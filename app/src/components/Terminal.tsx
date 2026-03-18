@@ -1,4 +1,6 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+// @ts-nocheck — opentui intrinsic elements (box, text, input) conflict with React HTML/SVG types
+import { useState, useCallback, useRef } from 'react'
+import { TUI } from '../../../gridland-src/packages/web/src/TUI'
 import { useCommandServer } from '../hooks/useCommandServer'
 import type { LessonStep } from '../lessons'
 
@@ -7,6 +9,7 @@ interface HistoryEntry {
   command: string
   output: string
   annotation?: string
+  startRow: number
 }
 
 interface Props {
@@ -15,37 +18,18 @@ interface Props {
   onAnnotation: (text: string, y: number) => void
 }
 
+const FONT_SIZE = 14
+
 export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
   const [history, setHistory] = useState<HistoryEntry[]>([])
-  const [input, setInput] = useState('')
   const [currentCwd, setCurrentCwd] = useState('~')
   const [waitingToContinue, setWaitingToContinue] = useState(false)
-  const [shake, setShake] = useState(false)
   const [focused, setFocused] = useState(false)
-  const bottomRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [inputValue, setInputValue] = useState('')
   const pendingCwd = useRef('~')
-  const pendingEntry = useRef<HistoryEntry | null>(null)
-  const lastAnnotatedRef = useRef<HTMLDivElement>(null)
-
-  // Refocus input whenever state changes
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [waitingToContinue, history.length])
-
-  // Scroll to bottom on new output
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [history, waitingToContinue])
-
-  // After history updates, measure the last annotated entry and emit Y position
-  useEffect(() => {
-    const last = history[history.length - 1]
-    if (last?.annotation && lastAnnotatedRef.current) {
-      const rect = lastAnnotatedRef.current.getBoundingClientRect()
-      onAnnotation(last.annotation, rect.top)
-    }
-  }, [history, onAnnotation])
+  const pendingAnnotation = useRef<string | undefined>(undefined)
+  const canvasContainerRef = useRef<HTMLDivElement>(null)
+  const cellHeightRef = useRef(Math.ceil(FONT_SIZE * 1.2))
 
   const handleResponse = useCallback((out: string, newCwd: string, init?: boolean) => {
     if (init) {
@@ -53,55 +37,73 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
       pendingCwd.current = newCwd
       return
     }
-    if (pendingEntry.current) {
-      const entry = { ...pendingEntry.current, output: out }
-      pendingEntry.current = null
-      setHistory(prev => [...prev, entry])
-    }
+
+    const annotation = pendingAnnotation.current
+    pendingAnnotation.current = undefined
+
+    setHistory(prev => {
+      const startRow = prev.reduce((sum, entry) => {
+        const outputLines = entry.output ? entry.output.split('\n').length : 0
+        return sum + 1 + outputLines
+      }, 0)
+
+      const entry: HistoryEntry = {
+        prompt: currentCwd,
+        command: inputValue,
+        output: out,
+        annotation,
+        startRow,
+      }
+
+      if (annotation && canvasContainerRef.current) {
+        const canvasTop = canvasContainerRef.current.getBoundingClientRect().top
+        const y = canvasTop + (startRow * cellHeightRef.current)
+        setTimeout(() => onAnnotation(annotation, y), 0)
+      }
+
+      return [...prev, entry]
+    })
+
     setCurrentCwd(newCwd)
     pendingCwd.current = newCwd
     setWaitingToContinue(true)
-  }, [])
+  }, [currentCwd, inputValue, onAnnotation])
 
   const { sendCommand, connected } = useCommandServer(handleResponse)
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter') {
-      if (waitingToContinue) {
-        setWaitingToContinue(false)
-        onStepComplete(pendingCwd.current)
-        return
-      }
-
-      // Text-only step (no command) — Enter advances
-      if (!currentStep.command) {
-        onStepComplete(pendingCwd.current)
-        return
-      }
-
-      const trimmed = input.trim()
-      if (!trimmed) return
-
-      const expected = currentStep.command?.trim()
-      if (expected && trimmed !== expected) {
-        setShake(true)
-        setTimeout(() => setShake(false), 400)
-        setInput('')
-        return
-      }
-
-      if (!connected) return
-
-      pendingEntry.current = {
-        prompt: currentCwd,
-        command: trimmed,
-        output: '',
-        annotation: currentStep.annotation,
-      }
-      setInput('')
-      sendCommand(trimmed)
+  const handleSubmit = useCallback((value: string) => {
+    if (waitingToContinue) {
+      setWaitingToContinue(false)
+      onStepComplete(pendingCwd.current)
+      return
     }
-  }
+
+    if (!currentStep.command) {
+      onStepComplete(pendingCwd.current)
+      return
+    }
+
+    const trimmed = value.trim()
+    if (!trimmed) return
+
+    const expected = currentStep.command.trim()
+    if (trimmed !== expected) {
+      setInputValue('')
+      return
+    }
+
+    if (!connected) return
+
+    pendingAnnotation.current = currentStep.annotation
+    setInputValue('')
+    sendCommand(trimmed)
+  }, [waitingToContinue, currentStep, connected, onStepComplete, sendCommand])
+
+  const handleInput = useCallback((value: string) => {
+    if (!waitingToContinue) {
+      setInputValue(value)
+    }
+  }, [waitingToContinue])
 
   return (
     <div
@@ -118,7 +120,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
         transition: 'box-shadow 0.2s, border-color 0.2s',
       }}
     >
-      {/* Title bar */}
+      {/* HTML Title bar */}
       <div style={{
         background: '#2d2d2d',
         padding: '0 12px',
@@ -149,105 +151,66 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
         )}
       </div>
 
-      {/* Terminal content */}
-      <div
-        style={{
-          flex: 1,
-          background: '#1a1a1a',
-          padding: '12px 16px',
-          overflowY: 'auto',
-          fontFamily: '"SF Mono", "Fira Code", "Menlo", monospace',
-          fontSize: 13,
-          lineHeight: 1.6,
-          cursor: 'text',
-        }}
-        onClick={() => inputRef.current?.focus()}
-      >
-        {/* History */}
-        {history.map((entry, i) => {
-          const isLast = i === history.length - 1
-          const isAnnotated = !!entry.annotation
-          return (
-            <div
-              key={i}
-              style={{ marginBottom: 4 }}
-              ref={isLast && isAnnotated ? lastAnnotatedRef : undefined}
-            >
-              <div>
-                <span style={{ color: '#28c840' }}>{entry.prompt}</span>
-                <span style={{ color: '#888' }}>$&nbsp;</span>
-                <span style={{ color: '#e2e8f0' }}>{entry.command}</span>
-              </div>
-              {entry.output && (
-                <div style={{ color: '#94a3b8', whiteSpace: 'pre-wrap' }}>{entry.output}</div>
-              )}
-            </div>
-          )
-        })}
+      {/* Gridland TUI canvas */}
+      <div ref={canvasContainerRef} style={{ flex: 1 }}>
+        <TUI
+          style={{ width: '100%', height: '100%' }}
+          fontSize={FONT_SIZE}
+          autoFocus={true}
+          backgroundColor="#1a1a1a"
+          onReady={(renderer) => {
+            if ('cellHeight' in renderer) {
+              cellHeightRef.current = (renderer as any).cellHeight
+            }
+            const canvas = renderer.canvas
+            canvas.addEventListener('focus', () => setFocused(true))
+            canvas.addEventListener('blur', () => setFocused(false))
+          }}
+        >
+          <box flexDirection="column" width="100%" height="100%" padding={1}>
+            {/* History */}
+            {history.map((entry, i) => (
+              <box key={i} flexDirection="column">
+                <text>
+                  <span style={{ fg: '#28c840' }}>{entry.prompt}</span>
+                  <span style={{ fg: '#888888' }}>{'$ '}</span>
+                  <span style={{ fg: '#e2e8f0' }}>{entry.command}</span>
+                </text>
+                {entry.output ? (
+                  <text fg="#94a3b8">{entry.output}</text>
+                ) : null}
+              </box>
+            ))}
 
-        {/* Press enter to continue */}
-        {waitingToContinue && (
-          <div style={{ color: '#555', fontStyle: 'italic', marginTop: 4 }}>
-            — press enter to continue —
-          </div>
-        )}
+            {/* Status / prompt */}
+            {waitingToContinue ? (
+              <text fg="#555555">— press enter to continue —</text>
+            ) : !currentStep.command ? (
+              <text fg="#555555">— press enter to continue —</text>
+            ) : (
+              <box flexDirection="row">
+                <text>
+                  <span style={{ fg: '#28c840' }}>{currentCwd}</span>
+                  <span style={{ fg: '#888888' }}>{'$ '}</span>
+                </text>
+                <input
+                  value={inputValue}
+                  onInput={handleInput}
+                  onSubmit={handleSubmit}
+                  focused={true}
+                  textColor="#e2e8f0"
+                  cursorColor="#e2e8f0"
+                  cursorStyle={{ style: 'block', blinking: true }}
+                />
+              </box>
+            )}
 
-        {/* Text-only step hint */}
-        {!waitingToContinue && !currentStep.command && (
-          <div style={{ color: '#555', fontStyle: 'italic', marginTop: 4 }}>
-            — press enter to continue —
-          </div>
-        )}
-
-        {/* Current prompt */}
-        {!waitingToContinue && currentStep.command && (
-          <div style={{ display: 'flex', alignItems: 'center', marginTop: 4 }}>
-            <span style={{ color: '#28c840' }}>{currentCwd}</span>
-            <span style={{ color: '#888' }}>$&nbsp;</span>
-            <span style={{ color: shake ? '#f87171' : '#e2e8f0', transition: 'color 0.15s' }}>
-              {input}
-            </span>
-            <span style={{
-              display: 'inline-block',
-              width: 8,
-              height: 14,
-              background: focused ? '#e2e8f0' : '#555',
-              marginLeft: 1,
-              verticalAlign: 'middle',
-              animation: focused ? 'blink 1s step-end infinite' : 'none',
-              transition: 'background 0.2s',
-            }} />
-          </div>
-        )}
-
-        {/* Click to focus hint */}
-        {!focused && (
-          <div style={{ color: '#444', fontSize: 11, marginTop: 12, textAlign: 'center' }}>
-            click here to type
-          </div>
-        )}
-
-        <div ref={bottomRef} />
+            {!focused && (
+              <text fg="#444444" marginTop={1}>click here to type</text>
+            )}
+          </box>
+        </TUI>
       </div>
-
-      {/* Always-present hidden input */}
-      <input
-        ref={inputRef}
-        value={input}
-        onChange={e => !waitingToContinue && setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        style={{ position: 'fixed', opacity: 0, pointerEvents: 'none', width: 1, height: 1 }}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck={false}
-      />
-
-      <style>{`
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-      `}</style>
     </div>
   )
 }
