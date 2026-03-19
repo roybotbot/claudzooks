@@ -12,7 +12,7 @@
       "command": "cd claudzooks-practice"
     },
     {
-      "text": "Let's create a file with several lines. You already know how `echo` and >> work, so type the first three lines:",
+      "text": "Let's create a file with several lines. You already know how `echo` and `>>` work, so type the first three lines:",
       "command": "echo \"Line 1\" > longfile.txt"
     },
     {

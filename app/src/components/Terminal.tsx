@@ -70,8 +70,9 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
 
     setCurrentCwd(newCwd)
     pendingCwd.current = newCwd
-    setWaitingToContinue(true)
-  }, [onAnnotation])
+    // Advance to next step immediately — no "press enter to continue" after commands
+    onStepComplete(newCwd)
+  }, [onAnnotation, onStepComplete])
 
   const { sendCommand, connected } = useCommandServer(handleResponse)
 
@@ -105,7 +106,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
     // clear command: wipe the terminal history
     if (trimmed === 'clear') {
       setHistory([])
-      setWaitingToContinue(true)
+      onStepComplete(pendingCwd.current)
       return
     }
 

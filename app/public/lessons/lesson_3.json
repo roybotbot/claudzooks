@@ -27,7 +27,7 @@
       "text": "You just created a file from the terminal! If you open Finder and navigate to your home folder, then into claudzooks-practice, you'll see hello.txt sitting there. It's a real file \u2014 you made it by typing a command."
     },
     {
-      "text": "## echo and > \u2014 write text into a file\n\nThe `echo` command prints text. The > symbol means \"send the output into this file\" instead of showing it on screen. If the file already has content, > replaces it completely.",
+      "text": "## echo and `>` \u2014 write text into a file\n\nThe `echo` command prints text. The `>` symbol means \"send the output into this file\" instead of showing it on screen. If the file already has content, `>` replaces it completely.",
       "command": "echo \"Hello, world!\" > hello.txt"
     },
     {
@@ -35,7 +35,7 @@
       "command": "cat hello.txt"
     },
     {
-      "text": "## >> \u2014 append to a file\n\nTwo arrows (>>) means \"add to the end of the file\" instead of replacing everything. This keeps what's already there and adds your new text after it.",
+      "text": "## `>>` \u2014 append to a file\n\nTwo arrows (`>>`) means \"add to the end of the file\" instead of replacing everything. This keeps what's already there and adds your new text after it.",
       "command": "echo \"This is my second line.\" >> hello.txt"
     },
     {
@@ -90,7 +90,7 @@
       "text": "The folder should be empty now (or show nothing)."
     },
     {
-      "text": "## What you learned\n- `touch` creates empty files\n- `echo \"text\" > file` writes text to a file (replaces contents)\n- `echo \"text\" >> file` adds text to the end of a file\n- `cat` prints a file's contents\n- `cp` copies files\n- `mv` moves or renames files\n- The / at the end of a name means it's a folder\n- `rm` deletes files permanently \u2014 be careful!\n\nRemember: you can always open Finder to see the files you create. The terminal and Finder show the same files."
+      "text": "## What you learned\n- `touch` creates empty files\n- `echo \"text\" `>` file` writes text to a file (replaces contents)\n- `echo \"text\" `>>` file` adds text to the end of a file\n- `cat` prints a file's contents\n- `cp` copies files\n- `mv` moves or renames files\n- The / at the end of a name means it's a folder\n- `rm` deletes files permanently \u2014 be careful!\n\nRemember: you can always open Finder to see the files you create. The terminal and Finder show the same files."
     }
   ]
 }
