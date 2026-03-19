@@ -49,6 +49,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
   const pendingAnnotation = useRef<string | undefined>(undefined)
   const pendingCommand = useRef('')
   const pendingPrompt = useRef('~')
+  const skipNextAdvance = useRef(false)
   const canvasContainerRef = useRef<HTMLDivElement>(null)
   const cellHeightRef = useRef(Math.ceil(FONT_SIZE * 1.2))
 
@@ -95,7 +96,11 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
 
     setCurrentCwd(newCwd)
     pendingCwd.current = newCwd
-    onStepComplete(newCwd)
+    if (skipNextAdvance.current) {
+      skipNextAdvance.current = false
+    } else {
+      onStepComplete(newCwd)
+    }
   }, [onAnnotation, onStepComplete])
 
   const { sendCommand, connected } = useCommandServer(handleResponse)
@@ -130,6 +135,23 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
     if (!trimmed) return
 
     const expected = currentStep.command.trim()
+
+    // Always allow cd commands so the user can navigate freely
+    if (trimmed.startsWith('cd ') || trimmed === 'cd') {
+      if (trimmed !== expected) {
+        // Run the cd but don't advance the lesson
+        if (!connected) return
+        pendingCommand.current = trimmed
+        pendingPrompt.current = currentCwd
+        setInputValue('')
+        sendCommand(trimmed)
+        // Prevent onStepComplete from being called via handleResponse
+        pendingAnnotation.current = undefined
+        skipNextAdvance.current = true
+        return
+      }
+    }
+
     if (trimmed !== expected) {
       setInputValue('')
       setErrorHint(`Not quite — try typing: ${expected}`)
