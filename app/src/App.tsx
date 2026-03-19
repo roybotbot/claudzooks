@@ -84,7 +84,7 @@ export default function App() {
     <div style={{
       display: 'flex',
       height: '100vh',
-      background: '#111',
+      background: '#1A1A1A',
       color: 'white',
       overflow: 'hidden',
     }}>
@@ -92,7 +92,7 @@ export default function App() {
       <div style={{
         width: 300,
         flexShrink: 0,
-        borderRight: '1px solid #1f2937',
+        borderRight: '1px solid #2B2B2B',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',

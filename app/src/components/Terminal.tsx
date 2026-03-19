@@ -4,6 +4,22 @@ import { TUI } from '../../../gridland-src/packages/web/src/TUI'
 import { useCommandServer } from '../hooks/useCommandServer'
 import type { LessonStep } from '../lessons'
 
+// 90s primary silkscreen palette
+const C = {
+  nearBlack:  '#1A1A1A',
+  charcoal:   '#2B2B2B',
+  warmGray:   '#7A756C',
+  lightGray:  '#C8C3B8',
+  offWhite:   '#F2EDE4',
+  red:        '#D94032',
+  vermillion: '#E24825',
+  blue:       '#1A3E78',
+  royalBlue:  '#2B5CA6',
+  teal:       '#1A7A6D',
+  yellow:     '#E8A820',
+  goldenrod:  '#D4960B',
+}
+
 interface HistoryEntry {
   prompt: string
   command: string
@@ -78,7 +94,6 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
 
     setCurrentCwd(newCwd)
     pendingCwd.current = newCwd
-    // Advance to next step immediately — no "press enter to continue" after commands
     onStepComplete(newCwd)
   }, [onAnnotation, onStepComplete])
 
@@ -154,32 +169,32 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
         borderRadius: 10,
         overflow: 'hidden',
         boxShadow: focused
-          ? '0 0 20px rgba(59,130,246,0.25), 0 20px 60px rgba(0,0,0,0.6)'
+          ? `0 0 20px rgba(43,92,166,0.3), 0 20px 60px rgba(0,0,0,0.6)`
           : '0 20px 60px rgba(0,0,0,0.6)',
-        border: focused ? '1px solid rgba(59,130,246,0.35)' : '1px solid #3a3a3a',
+        border: focused ? `1px solid rgba(43,92,166,0.4)` : `1px solid ${C.charcoal}`,
         transition: 'box-shadow 0.2s, border-color 0.2s',
       }}
     >
       {/* HTML Title bar */}
       <div style={{
-        background: '#2d2d2d',
+        background: C.charcoal,
         padding: '0 12px',
         height: 36,
         display: 'flex',
         alignItems: 'center',
         gap: 8,
         flexShrink: 0,
-        borderBottom: '1px solid #1a1a1a',
+        borderBottom: `1px solid ${C.nearBlack}`,
         position: 'relative',
       }}>
-        <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#ff5f57', display: 'inline-block' }} />
-        <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#febc2e', display: 'inline-block' }} />
-        <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#28c840', display: 'inline-block' }} />
+        <span style={{ width: 12, height: 12, borderRadius: '50%', background: C.red, display: 'inline-block' }} />
+        <span style={{ width: 12, height: 12, borderRadius: '50%', background: C.yellow, display: 'inline-block' }} />
+        <span style={{ width: 12, height: 12, borderRadius: '50%', background: C.teal, display: 'inline-block' }} />
         <span style={{
           position: 'absolute',
           left: '50%',
           transform: 'translateX(-50%)',
-          color: '#888',
+          color: C.warmGray,
           fontSize: 12,
           fontFamily: '-apple-system, sans-serif',
           pointerEvents: 'none',
@@ -187,7 +202,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
           bash
         </span>
         {!connected && (
-          <span style={{ marginLeft: 'auto', color: '#f87171', fontSize: 11 }}>⚠ connecting...</span>
+          <span style={{ marginLeft: 'auto', color: C.vermillion, fontSize: 11 }}>⚠ connecting...</span>
         )}
       </div>
 
@@ -197,7 +212,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
           style={{ width: '100%', height: '100%' }}
           fontSize={FONT_SIZE}
           autoFocus={true}
-          backgroundColor="#1a1a1a"
+          backgroundColor={C.nearBlack}
           onReady={(renderer) => {
             if ('cellHeight' in renderer) {
               cellHeightRef.current = (renderer as any).cellHeight
@@ -211,39 +226,43 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
             {/* History */}
             {history.map((entry, i) => (
               <box key={i} flexDirection="column">
-                <text>
-                  <span style={{ fg: '#28c840' }}>{entry.prompt}</span>
-                  <span style={{ fg: '#888888' }}>{'$ '}</span>
-                  <span style={{ fg: '#e2e8f0' }}>{entry.command}</span>
-                </text>
+                <box>
+                  <text>
+                    <span style={{ fg: C.teal }}>{entry.prompt}</span>
+                    <span style={{ fg: C.warmGray }}>{'$ '}</span>
+                    <span style={{ fg: C.offWhite }}>{entry.command}</span>
+                  </text>
+                </box>
                 {entry.output ? entry.output.split('\n').map((line, j) => (
-                  <text key={j} fg="#94a3b8">{line}</text>
+                  <box key={j}>
+                    <text fg={C.lightGray}>{line || ' '}</text>
+                  </box>
                 )) : null}
               </box>
             ))}
 
             {/* Status / prompt */}
             {(waitingToContinue || !currentStep.command) && (
-              <text fg="#555555">— press enter to continue —</text>
+              <text fg={C.warmGray}>— press enter to continue —</text>
             )}
 
             {errorHint && (
-              <text fg="#f87171">{errorHint}</text>
+              <text fg={C.red}>{errorHint}</text>
             )}
 
             {!waitingToContinue && currentStep.command && (
               <box flexDirection="row">
                 <text>
-                  <span style={{ fg: '#28c840' }}>{currentCwd}</span>
-                  <span style={{ fg: '#888888' }}>{'$ '}</span>
+                  <span style={{ fg: C.teal }}>{currentCwd}</span>
+                  <span style={{ fg: C.warmGray }}>{'$ '}</span>
                 </text>
                 <input
                   value={inputValue}
                   onInput={handleInput}
                   onSubmit={handleSubmit}
                   focused
-                  textColor="#e2e8f0"
-                  cursorColor="#ffffff"
+                  textColor={C.offWhite}
+                  cursorColor={C.offWhite}
                   cursorStyle="block"
                 />
               </box>
@@ -256,13 +275,13 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
                 onInput={() => {}}
                 onSubmit={handleSubmit}
                 focused
-                textColor="#1a1a1a"
-                cursorColor="#1a1a1a"
+                textColor={C.nearBlack}
+                cursorColor={C.nearBlack}
               />
             )}
 
             {!focused && currentStep.command && !waitingToContinue && (
-              <text fg="#444444" marginTop={1}>click here to type</text>
+              <text fg={C.warmGray} marginTop={1}>click here to type</text>
             )}
           </box>
         </TUI>
