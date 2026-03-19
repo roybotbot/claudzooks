@@ -72,20 +72,28 @@ function renderBlock(text: string) {
         </h3>
       )
     } else if (line.startsWith('    ')) {
-      // Indented code block
+      // Collect consecutive indented lines into one code block
+      const codeLines = [line.trimStart()]
+      while (i + 1 < lines.length && lines[i + 1].startsWith('    ')) {
+        i++
+        codeLines.push(lines[i].trimStart())
+      }
       elements.push(
-        <div key={i} style={{
+        <pre key={i} style={{
           fontFamily: '"SF Mono", "Fira Code", "Menlo", monospace',
           fontSize: 13,
           background: C.charcoal,
           border: `1px solid ${C.warmGray}44`,
           borderRadius: 4,
-          padding: '4px 8px',
-          margin: '4px 0',
+          padding: '8px 10px',
+          margin: '6px 0',
           color: C.goldenrod,
+          whiteSpace: 'pre',
+          overflowX: 'auto',
+          lineHeight: 1.5,
         }}>
-          {line.trimStart()}
-        </div>
+          {codeLines.join('\n')}
+        </pre>
       )
     } else if (line.startsWith('- ')) {
       elements.push(
