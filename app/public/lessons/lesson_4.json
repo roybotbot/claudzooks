@@ -22,7 +22,7 @@
       "command": "echo \"Line 3\" >> longfile.txt"
     },
     {
-      "text": "You get the idea \u2014 we need a few more lines. Let me add the rest for you.",
+      "text": "You get the idea \u2014 we need more lines to work with. Let me add the rest for you.",
       "auto_commands": [
         "echo \"Line 4\" >> longfile.txt",
         "echo \"Line 5\" >> longfile.txt",
@@ -30,19 +30,26 @@
         "echo \"Line 7\" >> longfile.txt",
         "echo \"Line 8\" >> longfile.txt",
         "echo \"Line 9\" >> longfile.txt",
-        "echo \"Line 10\" >> longfile.txt"
+        "echo \"Line 10\" >> longfile.txt",
+        "echo \"Line 11\" >> longfile.txt",
+        "echo \"Line 12\" >> longfile.txt",
+        "echo \"Line 13\" >> longfile.txt",
+        "echo \"Line 14\" >> longfile.txt",
+        "echo \"Line 15\" >> longfile.txt"
       ]
     },
     {
-      "text": "Now we have a 10-line file to practice with."
+      "text": "Now we have a 15-line file to practice with."
     },
     {
-      "text": "## head \u2014 see the first lines\n\n`head` is a command that shows the beginning of a file. By default it shows the first 10 lines.",
-      "command": "head longfile.txt"
+      "text": "## head \u2014 see the first lines\n\n`head` shows the beginning of a file. By default, it shows the first 10 lines. Since our file has 15 lines, you\u2019ll only see the first 10:",
+      "command": "head longfile.txt",
+      "annotation": "head shows the first 10 lines by default. The last 5 lines are hidden."
     },
     {
-      "text": "You can tell `head` exactly how many lines to show using a flag. The -3 flag means \"show only the first 3 lines.\" You can use any number: -5 for five lines, -1 for one line, and so on.",
-      "command": "head -3 longfile.txt"
+      "text": "You can control how many lines `head` shows with a number flag. `-3` means show only the first 3:",
+      "command": "head -3 longfile.txt",
+      "annotation": "-3 means only show the first 3 lines instead of the default 10."
     },
     {
       "text": "## tail \u2014 see the last lines\n\n`tail` is the opposite of `head` \u2014 it shows the end of a file. Same idea, same flags.",
