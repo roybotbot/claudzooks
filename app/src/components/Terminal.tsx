@@ -44,6 +44,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
   const [focused, setFocused] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [errorHint, setErrorHint] = useState<string | null>(null)
+  const [showNoPaste, setShowNoPaste] = useState(false)
   const pendingCwd = useRef('~')
   const pendingAnnotation = useRef<string | undefined>(undefined)
   const pendingCommand = useRef('')
@@ -173,6 +174,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
           : '0 20px 60px rgba(0,0,0,0.6)',
         border: focused ? `1px solid rgba(43,92,166,0.4)` : `1px solid ${C.charcoal}`,
         transition: 'box-shadow 0.2s, border-color 0.2s',
+        position: 'relative',
       }}
     >
       {/* HTML Title bar */}
@@ -206,6 +208,32 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
         )}
       </div>
 
+      {/* No paste popup */}
+      {showNoPaste && (
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          background: C.charcoal,
+          border: `2px solid ${C.yellow}`,
+          borderRadius: 10,
+          padding: '1.5rem 2rem',
+          zIndex: 200,
+          textAlign: 'center',
+          fontFamily: '-apple-system, "Segoe UI", sans-serif',
+          boxShadow: `0 0 30px rgba(232,168,32,0.3)`,
+        }}>
+          <div style={{ fontSize: 32, marginBottom: 8 }}>🙅</div>
+          <div style={{ color: C.yellow, fontSize: 16, fontWeight: 600, marginBottom: 4 }}>
+            No copy-paste!
+          </div>
+          <div style={{ color: C.lightGray, fontSize: 13 }}>
+            Type it out — your fingers need the practice.
+          </div>
+        </div>
+      )}
+
       {/* Gridland TUI canvas */}
       <div ref={canvasContainerRef} style={{ flex: 1 }}>
         <TUI
@@ -220,6 +248,13 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
             const canvas = renderer.canvas
             canvas.addEventListener('focus', () => setFocused(true))
             canvas.addEventListener('blur', () => setFocused(false))
+            // Block paste — you gotta type it yourself!
+            document.addEventListener('paste', (e) => {
+              e.preventDefault()
+              e.stopImmediatePropagation()
+              setShowNoPaste(true)
+              setTimeout(() => setShowNoPaste(false), 2500)
+            }, true)
           }}
         >
           <box flexDirection="column" width="100%" padding={1}>
@@ -251,22 +286,24 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
             )}
 
             {!waitingToContinue && currentStep.command && (
-              <box flexDirection="row" flexWrap="nowrap">
-                <text flexShrink={0}>
-                  <span style={{ fg: '#28c840' }}>{currentCwd}</span>
-                  <span style={{ fg: C.warmGray }}>{'$ '}</span>
-                </text>
+              <>
+                <box>
+                  <text>
+                    <span style={{ fg: '#28c840' }}>{currentCwd}</span>
+                    <span style={{ fg: C.warmGray }}>{'$ '}</span>
+                    <span style={{ fg: C.offWhite }}>{inputValue}</span>
+                    <span style={{ fg: C.offWhite }}>{'█'}</span>
+                  </text>
+                </box>
                 <input
                   value={inputValue}
                   onInput={handleInput}
                   onSubmit={handleSubmit}
                   focused
-                  textColor={C.offWhite}
-                  cursorColor={C.offWhite}
-                  cursorStyle="block"
-                  flexShrink={1}
+                  textColor={C.nearBlack}
+                  cursorColor={C.nearBlack}
                 />
-              </box>
+              </>
             )}
 
             {/* Hidden input to capture Enter for text-only steps and continue prompts */}
