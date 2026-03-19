@@ -1,5 +1,5 @@
 // @ts-nocheck — opentui intrinsic elements (box, text, input) conflict with React HTML/SVG types
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { TUI } from '../../../gridland-src/packages/web/src/TUI'
 import { useCommandServer } from '../hooks/useCommandServer'
 import type { LessonStep } from '../lessons'
@@ -42,6 +42,14 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
       return
     }
 
+    // Skip responses from auto_commands — they run silently
+    if (autoCommandsPending.current > 0) {
+      autoCommandsPending.current--
+      setCurrentCwd(newCwd)
+      pendingCwd.current = newCwd
+      return
+    }
+
     const annotation = pendingAnnotation.current
     pendingAnnotation.current = undefined
 
@@ -75,6 +83,20 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
   }, [onAnnotation, onStepComplete])
 
   const { sendCommand, connected } = useCommandServer(handleResponse)
+
+  // Run auto_commands silently when a step has them
+  const autoCommandsRun = useRef<string | null>(null)
+  const autoCommandsPending = useRef(0)
+  useEffect(() => {
+    if (!currentStep.auto_commands || !connected) return
+    const key = currentStep.auto_commands.join('|')
+    if (autoCommandsRun.current === key) return
+    autoCommandsRun.current = key
+    autoCommandsPending.current = currentStep.auto_commands.length
+    for (const cmd of currentStep.auto_commands) {
+      sendCommand(cmd)
+    }
+  }, [currentStep, connected, sendCommand])
 
   const handleSubmit = useCallback((value: string) => {
     if (waitingToContinue) {
