@@ -13,6 +13,7 @@ export default function App() {
   const { lessonIndex, stepIndex, cwd } = progress
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [annotation, setAnnotation] = useState<{ text: string; y: number } | null>(null)
+  const [wrongCommand, setWrongCommand] = useState(false)
 
   useEffect(() => {
     setLesson(null)
@@ -102,6 +103,7 @@ export default function App() {
           lessonIndex={lessonIndex}
           totalLessons={TOTAL_LESSONS}
           onContinue={advanceStep}
+          showCommandHint={wrongCommand}
         />
       </div>
 
@@ -119,6 +121,10 @@ export default function App() {
             currentStep={currentStep}
             onStepComplete={advance}
             onAnnotation={handleAnnotation}
+            onWrongCommand={() => {
+              setWrongCommand(true)
+              setTimeout(() => setWrongCommand(false), 3000)
+            }}
           />
         </div>
       </div>

@@ -7,9 +7,10 @@ interface Props {
   lessonIndex: number
   totalLessons: number
   onContinue?: () => void
+  showCommandHint?: boolean
 }
 
-export function LessonPanel({ lesson, stepIndex, lessonIndex, totalLessons, onContinue }: Props) {
+export function LessonPanel({ lesson, stepIndex, lessonIndex, totalLessons, onContinue, showCommandHint }: Props) {
   const step: LessonStep = lesson.steps[stepIndex]
   const isTextOnly = !step.command
   const [showNudge, setShowNudge] = useState(false)
@@ -56,7 +57,9 @@ export function LessonPanel({ lesson, stepIndex, lessonIndex, totalLessons, onCo
           padding: '1rem',
           background: '#111827',
           borderRadius: 6,
-          border: '1px solid #1f2937',
+          border: showCommandHint ? '1px solid rgba(239,68,68,0.5)' : '1px solid #1f2937',
+          boxShadow: showCommandHint ? '0 0 14px rgba(239,68,68,0.25)' : 'none',
+          transition: 'border-color 0.3s, box-shadow 0.3s',
         }}>
           <div style={{ color: '#6b7280', fontSize: 11, marginBottom: 6, letterSpacing: 1 }}>
             TYPE THIS IN THE TERMINAL →

@@ -25,9 +25,11 @@ function runCommand(command: string, cwd: string): { output: string; cwd: string
   if (trimmed === "cd" || trimmed.startsWith("cd ")) {
     const parts = trimmed.split(/\s+/)
     const target = parts[1] || Bun.env.HOME || "/"
-    const resolved = target.startsWith("/")
-      ? target
-      : join(cwd, target.replace("~", Bun.env.HOME || "/"))
+    const home = Bun.env.HOME || "/"
+    const expanded = target === "~" ? home : target.startsWith("~/") ? home + target.slice(1) : target
+    const resolved = expanded.startsWith("/")
+      ? expanded
+      : join(cwd, expanded)
 
     try {
       const real = require("path").resolve(resolved)

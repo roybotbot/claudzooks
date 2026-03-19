@@ -16,18 +16,22 @@ interface Props {
   currentStep: LessonStep
   onStepComplete: (newCwd: string) => void
   onAnnotation: (text: string, y: number) => void
+  onWrongCommand?: () => void
 }
 
 const FONT_SIZE = 14
 
-export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
+export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCommand }: Props) {
   const [history, setHistory] = useState<HistoryEntry[]>([])
   const [currentCwd, setCurrentCwd] = useState('~')
   const [waitingToContinue, setWaitingToContinue] = useState(false)
   const [focused, setFocused] = useState(false)
   const [inputValue, setInputValue] = useState('')
+  const [errorHint, setErrorHint] = useState<string | null>(null)
   const pendingCwd = useRef('~')
   const pendingAnnotation = useRef<string | undefined>(undefined)
+  const pendingCommand = useRef('')
+  const pendingPrompt = useRef('~')
   const canvasContainerRef = useRef<HTMLDivElement>(null)
   const cellHeightRef = useRef(Math.ceil(FONT_SIZE * 1.2))
 
@@ -48,8 +52,8 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
       }, 0)
 
       const entry: HistoryEntry = {
-        prompt: currentCwd,
-        command: inputValue,
+        prompt: pendingPrompt.current,
+        command: pendingCommand.current,
         output: out,
         annotation,
         startRow,
@@ -67,7 +71,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
     setCurrentCwd(newCwd)
     pendingCwd.current = newCwd
     setWaitingToContinue(true)
-  }, [currentCwd, inputValue, onAnnotation])
+  }, [onAnnotation])
 
   const { sendCommand, connected } = useCommandServer(handleResponse)
 
@@ -89,8 +93,12 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
     const expected = currentStep.command.trim()
     if (trimmed !== expected) {
       setInputValue('')
+      setErrorHint(`Not quite — try typing: ${expected}`)
+      setTimeout(() => setErrorHint(null), 3000)
+      onWrongCommand?.()
       return
     }
+    setErrorHint(null)
 
     if (!connected) return
 
@@ -102,6 +110,8 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
     }
 
     pendingAnnotation.current = currentStep.annotation
+    pendingCommand.current = trimmed
+    pendingPrompt.current = currentCwd
     setInputValue('')
     sendCommand(trimmed)
   }, [waitingToContinue, currentStep, connected, onStepComplete, sendCommand])
@@ -192,6 +202,10 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation }: Props) {
             {/* Status / prompt */}
             {(waitingToContinue || !currentStep.command) && (
               <text fg="#555555">— press enter to continue —</text>
+            )}
+
+            {errorHint && (
+              <text fg="#f87171">{errorHint}</text>
             )}
 
             {!waitingToContinue && currentStep.command && (
