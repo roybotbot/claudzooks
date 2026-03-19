@@ -251,8 +251,8 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
             )}
 
             {!waitingToContinue && currentStep.command && (
-              <box flexDirection="row">
-                <text>
+              <box flexDirection="row" flexWrap="nowrap">
+                <text flexShrink={0}>
                   <span style={{ fg: '#28c840' }}>{currentCwd}</span>
                   <span style={{ fg: C.warmGray }}>{'$ '}</span>
                 </text>
@@ -264,6 +264,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
                   textColor={C.offWhite}
                   cursorColor={C.offWhite}
                   cursorStyle="block"
+                  flexShrink={1}
                 />
               </box>
             )}
