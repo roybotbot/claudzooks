@@ -189,7 +189,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
       }}>
         <span style={{ width: 12, height: 12, borderRadius: '50%', background: C.red, display: 'inline-block' }} />
         <span style={{ width: 12, height: 12, borderRadius: '50%', background: C.yellow, display: 'inline-block' }} />
-        <span style={{ width: 12, height: 12, borderRadius: '50%', background: C.teal, display: 'inline-block' }} />
+        <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#28c840', display: 'inline-block' }} />
         <span style={{
           position: 'absolute',
           left: '50%',
@@ -228,7 +228,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
               <box key={i} flexDirection="column">
                 <box>
                   <text>
-                    <span style={{ fg: C.teal }}>{entry.prompt}</span>
+                    <span style={{ fg: '#28c840' }}>{entry.prompt}</span>
                     <span style={{ fg: C.warmGray }}>{'$ '}</span>
                     <span style={{ fg: C.offWhite }}>{entry.command}</span>
                   </text>
@@ -253,7 +253,7 @@ export function Terminal({ currentStep, onStepComplete, onAnnotation, onWrongCom
             {!waitingToContinue && currentStep.command && (
               <box flexDirection="row">
                 <text>
-                  <span style={{ fg: C.teal }}>{currentCwd}</span>
+                  <span style={{ fg: '#28c840' }}>{currentCwd}</span>
                   <span style={{ fg: C.warmGray }}>{'$ '}</span>
                 </text>
                 <input
